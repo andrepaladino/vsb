@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    div.area
+
+        h1= pageTitle
+
+        form(name='register' method='post' action='/register')
+            .form-group
+                label First Name
+                input.form-control(type='text' placeholder='Name' name='firstName')
+            .form-group
+                label Last Name
+                input.form-control(type='text' placeholder='Name' name='lastName')
+            .form-group
+                label User Name
+                input.form-control(type='text' placeholder='Name' name='username')
+            .form-group
+                label Email
+                input.form-control(type='email' placeholder='Email' name='email')
+            .form-group
+                label Password
+                input.form-control(type='password' placeholder='Password' name='password')
+
+            input(class='btn btn-success' type='submit' value='Register Now')

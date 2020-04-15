@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    div.area
+
+        h1= pageTitle
+
+        form(name='register', method='post', action='/teams/create', encType = 'multipart/form-data')
+            .form-group
+                label(for='exampleFormControlInput1') Name
+                input#exampleFormControlInput1.form-control(type='text' placeholder='Team Name', name='name')
+            .form-group
+                label Description
+                textarea.form-control(maxlength='50', placeholder='Description', name='description')
+            .form-group 
+                input(type='file', class='form-control-file', name='image')
+            
+            input(class='btn btn-success', type='submit', value='add')

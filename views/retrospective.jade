@@ -1,0 +1,134 @@
+extends layout
+
+block content
+
+    div.area
+        h1 Retrospective | #{retro.name}
+        .input-group.mb-3
+        .row.row-cols-3
+            .col
+                select#inputCategory.form-control
+                    each i in retro.retroTemplate.categories
+                        option(value='#{i.id}')=i.name
+            .col
+                    form(id='chat')
+                        input(type='hidden' name='user' value='#{user._id}')
+                        input(type='hidden' name='retroID' value='#{retro._id}')
+                        input(type='hidden' name='retroTemplateNumber' value='#{retro.retroTemplate.number}')
+                        input.form-control(type='text' name='message')
+                        if(retro.status == 'INPROGRESS')
+                            input(class='btn btn-success' type='submit' value='Save')
+        </br>
+        div(style='text-align:center;margin-top:40px;')
+            span.step
+            span.step
+            span.step
+            span.step
+        a.btn.btn-success(id='previousstep' href='#') Previous
+        a.btn.btn-success(id='nextstep' href='#') Next
+        .row
+            .col-md-10
+                if(retro.status == 'NEW')
+                    h1 Action Items
+                    table.table
+                        thead
+                            tr
+                                th(scope='col') Action Item
+                                th(scope='col') Owner
+                                th(scope='col') Complete
+                                th(scole='col') Cancel
+                                th(scole='col') Status
+                        tbody
+                            each i in retro.actionitems
+                                tr
+                                    th #{i.text}
+                                    th #{i.owner.username}
+                                    th    
+                                        a.btn.btn-info.complete-action(href='#')
+                                            span.material-icons(action-id = i._id)
+                                                | done_outline
+                                    th    
+                                        a.btn.btn-danger.cancel-action(href='#')
+                                            span.material-icons(action-id = i._id)
+                                                | clear
+                                    th #{i.status}
+                if(retro.status == 'INPROGRESS')
+                    div#includedContent
+                if(retro.status == 'REVIEW')
+                    .row
+                        .col-md-3
+                            form(id='actionitem')
+                                input.form-control(type='text' placeholder='Action' name='actionitem')
+                                select.form-control(name='selectMember')
+                                    each m in team.members
+                                        option(value='#{m._id}')=m.username
+                                input(class='btn btn-success' type='submit' value='Add')
+                        h1 REVIEW
+                        table.table
+                            thead
+                                tr
+                                    th(scope='col') Action Item
+                                    th(scope='col') Owner
+                                    th(scope='col') Complete
+                                    th(scole='col') Cancel
+                                    th(scole='col') Status
+                            tbody(id='actionitems')
+                                each ai in retro.actionitems
+                                        tr
+                                            th #{ai.text}
+                                            th #{ai.owner.username}
+                                            th    
+                                                a.btn.btn-info(href='#')
+                                                    span.material-icons.complete-action(action-id = ai._id)
+                                                        | done_outline
+                                            th    
+                                                a.btn.btn-danger.cancel-action(href='#')
+                                                    span.material-icons(action-id = ai._id)
+                                                        | clear
+                                            th #{ai.status}
+                if(retro.status == 'COMPLETED')
+                    h1 Completed
+                        each category in retro.retroTemplate.categories
+                            h3=category.name
+                            table.table
+                                thead
+                                    tr
+                                        th(scope='col') Input
+                                        th(scope='col') User
+                                tbody
+                                    each input in retro.inputs
+                                        if(input.category == category.id)
+                                            tr
+                                                th #{input.text}
+                                                th #{input.user.username}
+
+                    h1 Action Items
+                    table.table
+                            thead
+                                tr
+                                    th(scope='col') Action Item
+                                    th(scope='col') Owner
+                                    th(scole='col') Status
+                            tbody(id='actionitems')
+                                each ai in retro.actionitems
+                                        tr
+                                            th #{ai.text}
+                                            th #{ai.owner.username}
+                                            th #{ai.status}    
+            .col-md-2
+                div#participants
+                    h2 Participants
+                    ul
+                        each m in team.members
+                            .user(id="#{m._id}")
+                                .avatar(style='background-image: url(/images/icons8-usuário-100.png);')
+                                .infosPlayer
+                                    span.nick=m.username
+                                    span.inputQnt 0
+                                    i  inputs                                
+
+
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js')
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    script(type='text/javascript' src='/javascripts/retro.js')
