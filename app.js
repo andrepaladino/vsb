@@ -21,7 +21,7 @@ const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 
 const mongoStore = connectMongo(expressSession)
-mongoose.connect(process.env.DB_URI, { //ADD TO ENV
+mongoose.connect(process.env.MONGODB_URI, { //ADD TO ENV
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
