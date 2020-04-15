@@ -47,7 +47,7 @@ app.use(function (req, res, next) {
 var indexRouter = require('./routes/index');
 
 
-server.listen(process.env.PORT || 3050)
+server.listen(process.env.PORT || 8080)
 
 
 io.on('connection', socket => {
