@@ -15,12 +15,11 @@ var logger = require('morgan');
 var mongoose = require('mongoose')
 var connectMongo = require('connect-mongo')
 
-const PORT = process.env.$PORT || 3050;
+const PORT = process.env.PORT || 3050;
 
 
 var app = express()
 
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 
 const server = require('http').createServer(app)
@@ -234,6 +233,9 @@ io.on('connection', socket => {
   })
 
 })
+
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
