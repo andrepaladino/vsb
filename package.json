@@ -6,6 +6,9 @@
     "start": "nodemon index ./bin/www",
     "debug": "nodemon --inspect app.js"
   },
+  "events": {
+    "crash": "sh -c 'lsof -i :${PORT:-3000} -t | xargs kill'"
+  },
   "dependencies": {
     "bcrypt": "^3.0.8",
     "bcryptjs": "^2.4.3",
