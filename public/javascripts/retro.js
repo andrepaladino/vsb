@@ -3,7 +3,7 @@ $(function () {
     $('#includedContent').load('/template_views/template_' + templateNumber + '.html');
 });
 
-var socket = io('http://localhost:3050/')
+var socket = io()
 
 window.onbeforeunload = function (e) {
     // check condition

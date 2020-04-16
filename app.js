@@ -15,13 +15,8 @@ var logger = require('morgan');
 var mongoose = require('mongoose')
 var connectMongo = require('connect-mongo')
 
-const PORT = process.env.PORT || 3050;
-
 
 var app = express()
-
-
-
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 
@@ -51,10 +46,10 @@ app.use(function (req, res, next) {
 
 var indexRouter = require('./routes/index');
 
-// const PORT = process.env.PORT || 3050;
-// app.listen(PORT, () => {
-//     console.log(`Our app is running on port ${ PORT }`);
-// });
+const PORT = process.env.PORT || 3050;
+server.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
+});
 
 
 io.on('connection', socket => {
@@ -233,8 +228,6 @@ io.on('connection', socket => {
   })
 
 })
-
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 
 // view engine setup
