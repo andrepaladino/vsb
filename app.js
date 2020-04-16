@@ -15,10 +15,12 @@ var logger = require('morgan');
 var mongoose = require('mongoose')
 var connectMongo = require('connect-mongo')
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3050;
 
 
-var app = express().listen(PORT, () => console.log(`Listening on ${PORT}`));
+var app = express()
+
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 
 const server = require('http').createServer(app)
