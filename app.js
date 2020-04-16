@@ -15,7 +15,7 @@ var logger = require('morgan');
 var mongoose = require('mongoose')
 var connectMongo = require('connect-mongo')
 
-const PORT = process.env.PORT || 3050;
+const PORT = process.env.$PORT || 3050;
 
 
 var app = express()
