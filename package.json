@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "build": "bower install && grunt build",
-    "start" : "app.js",
-    // "start": "nodemon index ./bin/www",
+    "start" : "node app.js",
     "debug": "nodemon --inspect app.js"
   },
   "events": {
