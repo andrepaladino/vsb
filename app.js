@@ -15,7 +15,11 @@ var logger = require('morgan');
 var mongoose = require('mongoose')
 var connectMongo = require('connect-mongo')
 
-var app = express();
+const PORT = process.env.PORT || 3000;
+
+
+var app = express().listen(PORT, () => console.log(`Listening on ${PORT}`));
+
 
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
@@ -46,10 +50,10 @@ app.use(function (req, res, next) {
 
 var indexRouter = require('./routes/index');
 
-const PORT = process.env.PORT || 3050;
-app.listen(PORT, () => {
-    console.log(`Our app is running on port ${ PORT }`);
-});
+// const PORT = process.env.PORT || 3050;
+// app.listen(PORT, () => {
+//     console.log(`Our app is running on port ${ PORT }`);
+// });
 
 
 io.on('connection', socket => {
