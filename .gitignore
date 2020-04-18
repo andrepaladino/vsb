@@ -2,3 +2,5 @@
 node_modules/
 /public/images/*
 !/plublic/images/.gitkeep
+!/plublic/images/icons8-usuario.png
+!/plublic/images/team_default.png

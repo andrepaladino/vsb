@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "start" : "node app.js",
+    "dev" : "nodemon index ./bin/www",
     "debug": "nodemon --inspect app.js"
-  },
-  "events": {
-    "crash": "sh -c 'lsof -i :${PORT:-3000} -t | xargs kill'"
   },
   "dependencies": {
     "bcrypt": "^3.0.8",
