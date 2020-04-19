@@ -132,6 +132,7 @@ function renderMessage(messageObject) {
         var input = { inputid: inputid, retroid: retroid, userid: userid }
         socket.emit('likeInput', input)
     });
+    
 
     $(function () {
         console.log("draggable")
