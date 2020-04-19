@@ -53,10 +53,10 @@ server.listen(PORT, () => {
 
 
 io.on('connection', socket => {
+  socket.removeAllListeners()
   console.log('Socket conectado: ' + socket.id)
-
   socket.on('newUser', (retroid, userid) => {
-
+    
     socket.join(retroid)
 
     Retros.findById(retroid, (err, retro) => {
@@ -191,12 +191,15 @@ io.on('connection', socket => {
     console.log(action.owner)
 
     Retros.findByIdAndUpdate(action.retroid, { $push: { actionitems: { text: action.text, owner: action.owner } } }, { new: true }, (err, result) => {
-      console.log(result)
+      console.log('Action Item Created')
       Users.findById(action.owner, (err, user) => {
-        if (err)
+        if (err){
           console.log()
-        console.log('AI Onwer: ' + user)
-        io.to(action.retroid).emit('createActionItem', { actionitem: result.actionitems.pop(), owner: user })
+
+        }else{
+          console.log(socket)
+          io.to(action.retroid).emit('createActionItem', { actionitem: result.actionitems.pop(), owner: user })
+        }
       })
     })
   })

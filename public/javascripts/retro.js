@@ -164,7 +164,7 @@ function renderMessage(messageObject) {
     socket.on('createActionItem', function (data) {
         console.log(data.actionitem)
         console.log(data.owner)
-        $('#actionitems').after('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username+ '</th><th><a href="" class="btn btn-info"><span action-id = '+ data.actionitem._id +' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = '+ data.actionitem._id +' class="material-icons">clear</span></a></th>  <th>'+data.actionitem.status+'</th></tr>')
+        $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username+ '</th><th><a href="" class="btn btn-info"><span action-id = '+ data.actionitem._id +' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = '+ data.actionitem._id +' class="material-icons">clear</span></a></th>  <th>'+data.actionitem.status+'</th></tr>')
     })
 
     socket.on('cancelledActionItem', function(data) {
