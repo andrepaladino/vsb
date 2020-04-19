@@ -197,7 +197,6 @@ io.on('connection', socket => {
           console.log()
 
         }else{
-          console.log(socket)
           io.to(action.retroid).emit('createActionItem', { actionitem: result.actionitems.pop(), owner: user })
         }
       })
