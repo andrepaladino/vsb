@@ -202,7 +202,10 @@ io.on('connection', socket => {
       })
     })
   })
-
+  socket.on('nextStep', (data) => {
+    console.log('Next Step :' + data)
+    io.to(data).emit('goToNext', {retroid: data})
+  })
   socket.on('cancelActionItem', (actionid) => {
     Teams.findOneAndUpdate({ actionitems: { $elemMatch: { _id: actionid } } }, { $set: { 'actionitems.$.status': 'CANCELLED' } }, { new: true }, (err, result) => {
       if (err) {
@@ -225,10 +228,6 @@ io.on('connection', socket => {
     })
   })
 
-  socket.on('nextStep', (retroid) => {
-    console.log('NextStep: ' + retroid)
-    socket.emit('refresh', retroid)
-  })
 
 })
 

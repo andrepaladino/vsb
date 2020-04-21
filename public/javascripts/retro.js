@@ -3,7 +3,7 @@ $(function () {
     $('#includedContent').load('/template_views/template_' + templateNumber + '.html');
 });
 
-var socket = io()
+var socket = io('http://localhost:3050')
 
 window.onbeforeunload = function (e) {
     // check condition
@@ -161,6 +161,11 @@ function renderMessage(messageObject) {
         });
     })
 
+    socket.on('goToNext', function (data) {
+        console.log(data.retroid)
+        location.reload()
+    })
+
 
     socket.on('createActionItem', function (data) {
         console.log(data.actionitem)
@@ -168,54 +173,41 @@ function renderMessage(messageObject) {
         $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username + '</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>  <th>' + data.actionitem.status + '</th></tr>')
     })
 
-    socket.on('cancelledActionItem', function (data) {
-
-    })
-
-    socket.on('completedActionItem', function (data) {
-        location.reload()
-    })
-
-    socket.on('refresh', function (data) {
-        console.log("APOSKDOAPSKD")
-        //location.reload()
-    })
 }
 
-$(document).ready(function () {
-    $('#nextstep').on('click', function (e) {
-        var retroid = $('input[name=retroID]').val();
-        $.ajax({
-            type: 'GET',
-            url: '/retro/live/next/' + retroid,
-            success: function (response) {
-                socket.emit('nextStep', retroid)
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    })
-});
+
+$('.nextstep').on('click', function (e) {
+    console.log('Click Next Step')
+    var retroid = $('input[name=retroID]').val();
+    socket.emit('nextStep', retroid)
+    $.ajax({
+        type: 'GET',
+        url: '/retro/live/next/' + retroid,
+        success: function (response) {
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+})
 
 
-$(document).ready(function () {
-    $('#previousstep').on('click', function (e) {
-        var retroid = $('input[name=retroID]').val();
-        console.log('Refresh Page: ' + retroid)
 
-        $.ajax({
-            type: 'GET',
-            url: '/retro/live/previous/' + retroid,
-            success: function (response) {
-                socket.emit('nextStep', retroid)
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    })
-});
+
+$('.previousstep').on('click', function (e) {
+    var retroid = $('input[name=retroID]').val();
+    socket.emit('nextStep', retroid)
+    $.ajax({
+        type: 'GET',
+        url: '/retro/live/previous/' + retroid,
+        success: function (response) {
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+})
+
 
 $('#chat').submit(function (event) {
     event.preventDefault();

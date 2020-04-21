@@ -19,8 +19,8 @@ block content
                         if(retro.status == 'INPROGRESS')
                             input(class='btn btn-success' type='submit' value='Save')
         </br>
-        a.btn.btn-success(id='previousstep' href='') Previous
-        a.btn.btn-success(id='nextstep' href='') Next
+        a.btn.btn-success.previousstep(href='#') Previous
+        a.btn.btn-success.nextstep(href='#') Next
         .row
             .col-md-10
                 if(retro.status == 'NEW')
