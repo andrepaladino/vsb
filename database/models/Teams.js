@@ -27,6 +27,29 @@ const TeamSchema = new mongoose.Schema({
         ref: 'Retrospectives'
     }],
 
+    actionitems: [{
+        text:{
+            type: String
+        },
+
+        owner:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+
+        status:{
+            type: String,
+            enum: ['NEW','COMPLETED','CANCELLED'],
+            default: 'NEW'
+        },
+
+        retrospective: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Retrospectives'
+        }
+
+    }],
+
     //log Information
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

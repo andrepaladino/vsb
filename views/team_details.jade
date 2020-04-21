@@ -3,14 +3,11 @@ extends layout
 block content
 
     div.area
-
-        h1 Team </br>
-
-        div.container.team-details
+        h1 Team | #{team.name}
+        div
             .row
                 .col-md-3
-                    img(src='#{team.image}' alt='image' style='width:300px;height:200px;' class="rounded float-left")
-                .col-md-6
+                    img(src='#{team.image}' alt='image' style='width:300px;height:200px;' class="rounded")
                     form(name='update' method='post' action='/teams/edit/#{team.id}' encType = 'multipart/form-data')
                         .form-group
                             label Name
@@ -34,14 +31,74 @@ block content
                             label Updated Date
                             input.form-control(type='text' readonly='' value='#{team.updatedDate}')
                         .form-group 
-                            input(type='file', class='form-control-file', name='image')
+                            input(type='file' class='form-control-file' name='image')
                         .form-group 
                             input(type='hidden' name='currentImage' value='#{team.image}')
                         input(class='btn btn-success' type='submit' value='Save')
+
+                .col-md-6
+                    div.area
+                        h1 Open Action Items
+                        table.table
+                            thead
+                                tr
+                                    th(scope='col') Action Item
+                                    th(scope='col') Owner
+                                    th(scope='col') Complete
+                                    th(scole='col') Cancel
+                                    th(scole='col') Status
+                            tbody
+                                each i in team.actionitems
+                                    tr
+                                        th #{i.text}
+                                        th #{i.owner.username}
+                                        th    
+                                            a.btn.btn-info.complete-action(href='#')
+                                                span.material-icons(action-id = i._id)
+                                                    |   done_outline
+                                        th    
+                                            a.btn.btn-danger.cancel-action(href='#')
+                                                span.material-icons(action-id = i._id)
+                                                    |   clear
+                                        th #{i.status}
+                        h1 Retrospectives
+                        form(name='newRetro' method='post' action='/retro/create')
+                            .form-group
+                                h3 Create New
+                                .row
+                                    .col.5
+                                        select.form-control(name='selectedTemplate')
+                                            option(value='0') Select a template
+                                            each t in templates.templates
+                                                option(value='#{t.number}')=t.name
+                                    .col.5
+                                        input(type='hidden' name='teamID' value='#{team.id}')
+                                        input.form-control(type='text' placeholder='Title' name='retrospective')
+                                    .col.2
+                                        input(class='btn btn-success' type='submit' value='Create')
+                            </br>
+                        table.table
+                            thead
+                                tr
+                                    th(scope='col') Title
+                                    th(scope='col') Date
+                                    th(scope='col') Join
+                            tbody
+                                each i in team.retrospectives
+                                    tr
+                                        th #{i.name}
+                                        th #{i.createdDate}
+                                        th
+                                            a.btn.btn-info(id='join' href='/retro/live/#{i.id}')
+                                                span.material-icons
+                                                    | play_circle_outline
+                                        //- th    
+                                        //-   a.btn.btn-danger.remove-member(href='#' team-id = team.id member-id = i._id)
+                                        //-     span.glyphicon.glyphicon-remove\
                 .col-md-3
                     div#participants
                     h2 Members
-                    ul
+                    div
                         each m in team.members
                             .user(id="#{m._id}")
                                 .avatar.teammember(style='background-image: url(/images/icons8-usuario.png);')
@@ -49,43 +106,10 @@ block content
                                     span.nick=m.username
                                     a.remove-member(href='#')
                                         span.material-icons(href='#' team-id = team._id member-id = m._id style="color:red")
-                                           | delete
+                                            | delete
                     div.area
                         form(name='addmember' method='post' action='/teams/add/member/#{team.id}')
                             .form-group
                                 label Add Team Member
                                 input.form-control(type='text' placeholder='member@email.com' name='memberEmail')
-                            input(class='btn btn-success' type='submit' value='Save')
-            div.area
-                h1 Retrospectives
-                form(name='newRetro' method='post' action='/retro/create')
-                    .form-group
-                        label Start Retrospective
-                        .col.md.6
-                            select.form-control(name='selectedTemplate')
-                                each t in templates.templates
-                                    option(value='#{t.number}')=t.name
-                        .col.md.6
-                            input(type='hidden' name='teamID' value='#{team.id}')
-                            input.form-control(type='text' placeholder='Retrospective' name='retrospective')
-                    </br>
-                    input(class='btn btn-success' type='submit' value='Create')
-                    </br>
-                table.table
-                    thead
-                        tr
-                            th(scope='col') Name
-                            th(scope='col') Date
-                            th(scope='col') Join
-                    tbody
-                        each i in team.retrospectives
-                            tr
-                                th #{i.name}
-                                th #{i.createdDate}
-                                th
-                                    a.btn.btn-info(id='join' href='/retro/live/#{i.id}')
-                                        span.material-icons
-                                            | play_circle_outline
-                                //- th    
-                                //-   a.btn.btn-danger.remove-member(href='#' team-id = team.id member-id = i._id)
-                                //-     span.glyphicon.glyphicon-remove\
+                            input(class='btn btn-success' type='submit' value='Add')

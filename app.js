@@ -4,6 +4,7 @@ dotenv.config();
 const Retros = require('./database/models/Retrospectives')
 const Users = require('./database/models/Users')
 const Inputs = require('./database/models/Inputs')
+const Teams = require('./database/models/Teams')
 
 
 var createError = require('http-errors');
@@ -48,7 +49,7 @@ var indexRouter = require('./routes/index');
 
 const PORT = process.env.PORT || 3050;
 server.listen(PORT, () => {
-    console.log(`Our app is running on port ${ PORT }`);
+  console.log(`Our app is running on port ${PORT}`);
 });
 
 
@@ -56,7 +57,7 @@ io.on('connection', socket => {
   socket.removeAllListeners()
   console.log('Socket conectado: ' + socket.id)
   socket.on('newUser', (retroid, userid) => {
-    
+
     socket.join(retroid)
 
     Retros.findById(retroid, (err, retro) => {
@@ -190,32 +191,31 @@ io.on('connection', socket => {
     console.log(action.retroid)
     console.log(action.owner)
 
-    Retros.findByIdAndUpdate(action.retroid, { $push: { actionitems: { text: action.text, owner: action.owner } } }, { new: true }, (err, result) => {
-      console.log('Action Item Created')
+    Teams.findOneAndUpdate({ retrospectives: action.retroid }, { $push: { actionitems: { text: action.text, owner: action.owner, retroid: action.retroid } } }, { new: true }, (err, team) => {
+      console.log(team)
       Users.findById(action.owner, (err, user) => {
-        if (err){
-          console.log()
-
-        }else{
-          io.to(action.retroid).emit('createActionItem', { actionitem: result.actionitems.pop(), owner: user })
+        if (err) {
+          console.log(err)
+        } else {
+          io.to(action.retroid).emit('createActionItem', { actionitem: team.actionitems.pop(), owner: user })
         }
       })
     })
   })
 
   socket.on('cancelActionItem', (actionid) => {
-    Retros.findOneAndUpdate({ actionitems: { $elemMatch: { _id: actionid } } }, { $set: { 'actionitems.$.status': 'CANCELLED' } }, { new: true }, (err, result) => {
+    Teams.findOneAndUpdate({ actionitems: { $elemMatch: { _id: actionid } } }, { $set: { 'actionitems.$.status': 'CANCELLED' } }, { new: true }, (err, result) => {
       if (err) {
         console.log(err)
       } else {
         console.log(result)
       }
-      io.to(result._id).emit('cancelledActionItem', actionid)
+      io.to(action.retroid).emit('cancelledActionItem', actionid)
     })
   })
 
   socket.on('completeActionItem', (actionid) => {
-    Retros.findOneAndUpdate({ actionitems: { $elemMatch: { _id: actionid } } }, { $set: { 'actionitems.$.status': 'COMPLETED' } }, { new: true }, (err, result) => {
+    Teams.findOneAndUpdate({ actionitems: { $elemMatch: { _id: actionid } } }, { $set: { 'actionitems.$.status': 'COMPLETED' } }, { new: true }, (err, result) => {
       if (err) {
         console.log(err)
       } else {
@@ -225,8 +225,9 @@ io.on('connection', socket => {
     })
   })
 
-  socket.on('refreshPage', (retroid) => {
-    io.to(retroid).emit('refreshRetroPage')
+  socket.on('nextStep', (retroid) => {
+    console.log('NextStep: ' + retroid)
+    socket.emit('refresh', retroid)
   })
 
 })

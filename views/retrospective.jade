@@ -19,17 +19,12 @@ block content
                         if(retro.status == 'INPROGRESS')
                             input(class='btn btn-success' type='submit' value='Save')
         </br>
-        div(style='text-align:center;margin-top:40px;')
-            span.step
-            span.step
-            span.step
-            span.step
-        a.btn.btn-success(id='previousstep' href='#') Previous
-        a.btn.btn-success(id='nextstep' href='#') Next
+        a.btn.btn-success(id='previousstep' href='') Previous
+        a.btn.btn-success(id='nextstep' href='') Next
         .row
             .col-md-10
                 if(retro.status == 'NEW')
-                    h1 Action Items
+                    h1 Open Action Items
                     table.table
                         thead
                             tr
@@ -39,18 +34,18 @@ block content
                                 th(scole='col') Cancel
                                 th(scole='col') Status
                         tbody
-                            each i in retro.actionitems
+                            each i in team.actionitems
                                 tr
                                     th #{i.text}
                                     th #{i.owner.username}
                                     th    
                                         a.btn.btn-info.complete-action(href='#')
                                             span.material-icons(action-id = i._id)
-                                                | done_outline
+                                                |   done_outline
                                     th    
                                         a.btn.btn-danger.cancel-action(href='#')
                                             span.material-icons(action-id = i._id)
-                                                | clear
+                                                |   clear
                                     th #{i.status}
                 if(retro.status == 'INPROGRESS')
                     div#includedContent
@@ -73,18 +68,18 @@ block content
                                     th(scole='col') Cancel
                                     th(scole='col') Status
                             tbody(id='actionitems')
-                                each ai in retro.actionitems
+                                each ai in team.actionitems
                                         tr
                                             th #{ai.text}
                                             th #{ai.owner.username}
                                             th    
                                                 a.btn.btn-info(href='#')
                                                     span.material-icons.complete-action(action-id = ai._id)
-                                                        | done_outline
+                                                        |   done_outline
                                             th    
                                                 a.btn.btn-danger.cancel-action(href='#')
                                                     span.material-icons(action-id = ai._id)
-                                                        | clear
+                                                        |   clear
                                             th #{ai.status}
                 if(retro.status == 'COMPLETED')
                     h1 Completed
@@ -110,15 +105,15 @@ block content
                                     th(scope='col') Owner
                                     th(scole='col') Status
                             tbody(id='actionitems')
-                                each ai in retro.actionitems
+                                each ai in team.actionitems
                                         tr
                                             th #{ai.text}
                                             th #{ai.owner.username}
                                             th #{ai.status}    
             .col-md-2
-                div#participants
+                div#participants.participants
                     h2 Participants
-                    ul
+                    div
                         each m in team.members
                             .user(id="#{m._id}")
                                 .avatar(style='background-image: url(/images/icons8-usuario.png);')

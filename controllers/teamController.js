@@ -52,7 +52,7 @@ module.exports.details = (req, res) => {
             console.log(err)
         else
             res.render('team_details', { team: team, templates: RetroTemplates.loadTemplates })
-    }).populate('leader').populate('members').populate('createdBy').populate('updatedBy').populate('retrospectives')
+    }).populate('leader').populate('members').populate('createdBy').populate('updatedBy').populate('retrospectives').populate('actionitems.owner').populate('actionitems.retrospective')
 }
 
 //UPDATE TEAM

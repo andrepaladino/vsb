@@ -88,7 +88,7 @@ function removeInput(inputid) {
 function renderMessage(messageObject) {
     var appendTo = '.messages.' + messageObject.category.toLowerCase()
     $(appendTo.toString()).append(
-        '<div id="' + messageObject._id + '" class="message"><strong>' + messageObject.user.username + '</strong>: ' + messageObject.text + '</br><a class="remove-input" href="#"><span class="material-icons">| delete forever</span></a> <a class="like-input" href="#"><span class="material-icons">| thumb_up_alt</span></a><span class="likesCount">' + messageObject.likes.length + '</span> <input type="hidden" name="MessageID" value="' + messageObject._id + '"></input> </div>'
+        '<div id="' + messageObject._id + '" class="message"><strong>' + messageObject.user.username + '</strong>: ' + messageObject.text + '</br><a class="remove-input" href="#"><span class="material-icons">delete forever</span></a> <a class="like-input" href="#"><span class="material-icons">thumb_up_alt</span></a><span class="likesCount">' + messageObject.likes.length + '</span> <input type="hidden" name="MessageID" value="' + messageObject._id + '"></input> </div>'
     )
 
     if (document.getElementById(messageObject._id)) {
@@ -132,7 +132,7 @@ function renderMessage(messageObject) {
         var input = { inputid: inputid, retroid: retroid, userid: userid }
         socket.emit('likeInput', input)
     });
-    
+
 
     $(function () {
         console.log("draggable")
@@ -165,53 +165,57 @@ function renderMessage(messageObject) {
     socket.on('createActionItem', function (data) {
         console.log(data.actionitem)
         console.log(data.owner)
-        $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username+ '</th><th><a href="" class="btn btn-info"><span action-id = '+ data.actionitem._id +' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = '+ data.actionitem._id +' class="material-icons">clear</span></a></th>  <th>'+data.actionitem.status+'</th></tr>')
+        $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username + '</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>  <th>' + data.actionitem.status + '</th></tr>')
     })
 
-    socket.on('cancelledActionItem', function(data) {
-        console.log(data)
+    socket.on('cancelledActionItem', function (data) {
+
     })
 
-    socket.on('completedActionItem', function(data) {
-        console.log(data)
-    })
-
-    socket.on('refreshRetroPage', function(data) {
+    socket.on('completedActionItem', function (data) {
         location.reload()
+    })
+
+    socket.on('refresh', function (data) {
+        console.log("APOSKDOAPSKD")
+        //location.reload()
     })
 }
 
-$('#nextstep').on('click', function(e) {
-    var retroid = $('input[name=retroID]').val();
-    console.log('Refresh Page: ' + retroid)
-    
-    $.ajax({
-        type: 'GET',
-        url: '/retro/live/next/' + retroid,
-        success: function (response) {
-            socket.emit('refreshPage', retroid)
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    });
-})
+$(document).ready(function () {
+    $('#nextstep').on('click', function (e) {
+        var retroid = $('input[name=retroID]').val();
+        $.ajax({
+            type: 'GET',
+            url: '/retro/live/next/' + retroid,
+            success: function (response) {
+                socket.emit('nextStep', retroid)
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
+});
 
-$('#previousstep').on('click', function(e) {
-    var retroid = $('input[name=retroID]').val();
-    console.log('Refresh Page: ' + retroid)
-    
-    $.ajax({
-        type: 'GET',
-        url: '/retro/live/previous/' + retroid,
-        success: function (response) {
-            socket.emit('refreshPage', retroid)
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    });
-})
+
+$(document).ready(function () {
+    $('#previousstep').on('click', function (e) {
+        var retroid = $('input[name=retroID]').val();
+        console.log('Refresh Page: ' + retroid)
+
+        $.ajax({
+            type: 'GET',
+            url: '/retro/live/previous/' + retroid,
+            success: function (response) {
+                socket.emit('nextStep', retroid)
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
+});
 
 $('#chat').submit(function (event) {
     event.preventDefault();
@@ -253,10 +257,10 @@ $('#actionitem').submit(function (event) {
 $(document).ready(function () {
     $('.cancel-action').on('click', function (e) {
         $target = $(e.target);
-        
+
         const actionid = $target.attr('action-id');
         console.log('Remove Action Item: ' + actionid)
-        
+
         socket.emit('cancelActionItem', actionid)
     });
 });
@@ -264,10 +268,10 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('.complete-action').on('click', function (e) {
         $target = $(e.target);
-        
+
         const actionid = $target.attr('action-id');
         console.log('Complete Action Item: ' + actionid)
-        
+
         socket.emit('completeActionItem', actionid)
     });
 });

@@ -19,33 +19,37 @@ module.exports.save = (req, res) => {
     console.log('Team ID: ' + req.body.teamID)
     console.log(req.body.selectedTemplate)
 
-    var template = RetroTemplates.loadTemplates.templates.find(o => o.number == req.body.selectedTemplate);
-    console.log(template)
-    Retros.create({
-        team: req.body.teamID,
-        name: req.body.retrospective.trim(),
-        retroTemplate: template,
-        createdDate: Date.now()
-
-    }, (err, newRetro) => {
-        if (err) {
-            console.log(err)
-            return res.redirect('/teams')
-        }
-        else {
-            Teams.findById((req.body.teamID), (err, team) => {
-                team.updateOne({ $push: { retrospectives: newRetro } }, (err, result) => {
-                    if (err)
-                        console.log(err)
-                    else
-                        res.redirect('/teams/details/' + team._id)
+    if(req.body.selectedTemplate != 0){
+        var template = RetroTemplates.loadTemplates.templates.find(o => o.number == req.body.selectedTemplate);
+    
+        console.log(template)
+        Retros.create({
+            team: req.body.teamID,
+            name: req.body.retrospective.trim(),
+            retroTemplate: template,
+            createdDate: Date.now()
+    
+        }, (err, newRetro) => {
+            if (err) {
+                console.log(err)
+                return res.redirect('/teams')
+            }
+            else {
+                Teams.findById((req.body.teamID), (err, team) => {
+                    team.updateOne({ $push: { retrospectives: newRetro } }, (err, result) => {
+                        if (err)
+                            console.log(err)
+                        else
+                            res.redirect('/teams/details/' + team._id)
+                    })
                 })
+            }
+        })
+    }else{
+        res.redirect('/teams/details/' + req.body.teamID)
+    }
+    
 
-            })
-        }
-    })
-
-    console.log(req.file)
 }
 
 module.exports.live = (req, res) => {
@@ -54,20 +58,19 @@ module.exports.live = (req, res) => {
         Retros.findById(req.params.id, (err, retro) => {
             if (err)
                 console.log(err)
-        }).populate('participants').populate('actionitems.owner').populate('inputs').exec(function (err, retro) {
+        }).populate('participants').populate('inputs').exec(function (err, retro) {
             Inputs.populate(retro.inputs, { path: 'user' }, (err, result) => {
                 if (err)
                     console.log(err)
-                console.log(retro)
+                //console.log(team.retrospectives.actionitems)
                 res.render('retrospective', { retro: retro, team: team })
 
             })
         })
-    }).populate('members')
+    }).populate('members').populate('retrospectives').populate('actionitems.owner')
 }
 
 module.exports.nextStep = (req, res) => {
-    console.log('vai nxt step')
     Retros.findById(req.params.id, (err, retro) => {
         if (retro.status == 'NEW') {
             retro.updateOne({ $set: { status: 'INPROGRESS' } }, (err, result) => {
@@ -88,6 +91,7 @@ module.exports.nextStep = (req, res) => {
             })
         }
         res.redirect('/retro/live/' + retro._id)
+
     })
 }
 

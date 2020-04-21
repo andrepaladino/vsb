@@ -23,24 +23,6 @@ const RetroSchema = new mongoose.Schema({
         ref: 'Inputs'
     }],
 
-    actionitems: [{
-        text:{
-            type: String
-        },
-
-        owner:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-        },
-
-        status:{
-            type: String,
-            enum: ['NEW','COMPLETED','CANCELLED'],
-            default: 'NEW'
-        }
-
-    }],
-
     status:{
         type: String,
         enum: ['NEW','INPROGRESS','REVIEW', 'COMPLETED'],
@@ -51,7 +33,6 @@ const RetroSchema = new mongoose.Schema({
     },
 
     createdDate: Date,
-
 
 })
 
