@@ -15,6 +15,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose')
 var connectMongo = require('connect-mongo')
+var connectFlash = require('connect-flash')
 
 
 var app = express()
@@ -28,6 +29,8 @@ mongoose.connect(process.env.MONGODB_URI, { //ADD TO ENV
   useCreateIndex: true,
   useFindAndModify: false
 })
+
+app.use(connectFlash())
 
 app.use(expressSession({
   secret: process.env.EXPRESS_SECRET, //ADD TO ENV
@@ -191,7 +194,7 @@ io.on('connection', socket => {
     console.log(action.retroid)
     console.log(action.owner)
 
-    Teams.findOneAndUpdate({ retrospectives: action.retroid }, { $push: { actionitems: { text: action.text, owner: action.owner, retroid: action.retroid } } }, { new: true }, (err, team) => {
+    Teams.findOneAndUpdate({ retrospectives: action.retroid }, { $push: { actionitems: { text: action.text, owner: action.owner, retrospective: action.retroid } } }, { new: true }, (err, team) => {
       console.log(team)
       Users.findById(action.owner, (err, user) => {
         if (err) {

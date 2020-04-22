@@ -67,7 +67,7 @@ module.exports.live = (req, res) => {
 
             })
         })
-    }).populate('members').populate('retrospectives').populate('actionitems.owner')
+    }).populate('members').populate('retrospectives').populate('actionitems.owner').populate('actionitems.retrospective')
 }
 
 module.exports.nextStep = (req, res) => {

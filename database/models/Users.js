@@ -5,25 +5,29 @@ const SALT_WORK_FACTOR = 10
 const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
+        required: [true, 'Please provide your first name']
     },
     lastName: {
         type: String,
-        required: true
+        required: [true, 'Please provide your last name']
     },
     username: {
         type: String,
-        required: true,
+        required: [true, 'Please provide your username'],
         unique: true
     },
     email: {
         type: String,
-        required: true,
+        required: [true, 'Please provide your email'],
         unique: true
     },
     password: {
         type: String,
-        required: true
+        required: [true, 'Please provide your password']
+    },
+    image: {
+        type: String,
+        default: '/images/icons8-usuario.png'
     }
 })
 

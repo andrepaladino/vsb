@@ -5,10 +5,15 @@ block content
 
         h1= pageTitle
 
+        if(errors)
+            ul.list-group
+                each err in errors
+                    li.list-group-item.text-danger= err
+
         form(name='register' method='post' action='/register')
             .form-group
                 label First Name
-                input.form-control(type='text' placeholder='Name' name='firstName')
+                input.form-control(type='text' placeholder='Name' value='#{data||""}'  name='firstName')
             .form-group
                 label Last Name
                 input.form-control(type='text' placeholder='Name' name='lastName')
