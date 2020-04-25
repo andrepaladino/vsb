@@ -122,7 +122,7 @@ block content
                     div
                         each m in team.members
                             .user(id="#{m._id}")
-                                .avatar(style='background-image: url(#{m.image});')
+                                a.avatar(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
                                 .infosPlayer
                                     span.nick=m.username
                                     span.inputQnt 0

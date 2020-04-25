@@ -55,6 +55,16 @@ router.get('/register', authController.redirectIfAuth, userController.register)
 //SUBMIT REGISTRATION
 router.post('/register', authController.redirectIfAuth, userController.registerUser);
 
+//LOAD USER DETAIS PAGE
+router.get('/user/details/:id', authController.auth, userController.details)
+
+//SUBMIT USER UPDATE
+router.post('/user/edit/:id', upload.single('image'), authController.auth, userController.update)
+
+//UPDATE USER PASSWORD
+router.post('/user/password/:id',  authController.auth, userController.updatePassword)
+
+
 //LOGOUT
 router.get('/logout', authController.redirectIfAuth, authController.logout);
 

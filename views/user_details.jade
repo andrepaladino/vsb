@@ -1,0 +1,55 @@
+extends layout
+
+block content
+
+    div.area
+        h1 User
+        if user._id == userDetails._id 
+            .row
+                .col-md-3
+                    img(src='#{userDetails.image}' alt='image' style='width:300px;height:200px;' class="rounded")
+                .col-md-6
+                    h1 User Details
+                    form(name='update' method='post' action='/user/edit/#{userDetails.id}' encType = 'multipart/form-data')
+                        .form-group
+                            label First Name
+                            input.form-control(type='text' value='#{userDetails.firstName}' name='firstName')
+                        .form-group
+                            label Last Name
+                            input.form-control(type='text' value='#{userDetails.lastName}' name='lastName')
+                        .form-group
+                            label Username
+                            input.form-control(type='text' value='#{userDetails.username}' name='username')
+                        .form-group
+                            label Email
+                            input.form-control(type='text' readonly='' value='#{userDetails.email}' name='email')
+                        .form-group 
+                            input(type='file' class='form-control-file' name='image')
+                        .form-group 
+                            input(type='hidden' name='currentImage' value='#{userDetails.image}')
+                        input(class='btn btn-success' type='submit' value='Save')
+                    h1 Update Password
+                    form(name='update' method='post' action='/user/password/#{userDetails.id}')
+                        .form-group
+                            label Password
+                            input.form-control(type='password' placeholder='New Password' name='password')
+                        input(class='btn btn-success' type='submit' value='Save')
+                
+        else
+            .row
+                .col-md-3
+                    img(src='#{userDetails.image}' alt='image' style='width:300px;height:200px;' class="rounded")
+                .col-md-6
+                    form
+                        .form-group
+                            label First Name
+                            input.form-control(type='text' readonly value='#{userDetails.firstName}' name='firstName')
+                        .form-group
+                            label Last Name
+                            input.form-control(type='text' readonly value='#{userDetails.lastName}' name='lastName')
+                        .form-group
+                            label Username
+                            input.form-control(type='text'  value='#{userDetails.username}' name='username' readonly)
+                        .form-group
+                            label Email
+                            input.form-control(type='text' readonly value='#{userDetails.email}' name='email')

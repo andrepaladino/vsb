@@ -62,3 +62,62 @@ module.exports.registerUser = (req, res) => {
         }
     })
 }
+
+module.exports.details = (req, res) => {
+    Users.findById((req.params.id), (err, user) => {
+        if (err)
+            console.log(err)
+        else
+            res.render('user_details', { userDetails: user })
+    })
+}
+
+module.exports.update = (req, res) => {
+
+    console.log(req.file)
+    try {
+        var currentImageName = '/images/' + req.file.filename
+        console.log(req.file.filename)
+    } catch (ex) {
+        console.log(req.body.currentImage)
+        var currentImageName = req.body.currentImage
+        console.log(ex)
+        console.log('file name is: ' + req.body.currentImage)
+    }
+
+    console.log(req.body.password)
+
+    Users.findByIdAndUpdate((req.params.id),
+        {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            image: currentImageName,
+            username: req.body.username,
+        }, { new: true }, (err, user) => {
+
+            if (err)
+                console.log(err)
+            else
+            req.session.user.firstName = user.firstName
+            req.session.user.lastName = user.lastName
+            req.session.user.username = user.username
+            console.log(req.session)
+            res.redirect('/user/details/' + user._id)
+        })
+
+
+}
+
+module.exports.updatePassword = (req, res) => {
+    Users.findById(req.params.id, (err, user) => {
+        user.password = req.body.password
+
+        user.save({}, (err, result) => {
+            if(err)
+                console.log(err)
+
+            req.session.user.password = result.password
+            res.redirect('/user/details/' + user._id)
+        })
+    })
+}

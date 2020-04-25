@@ -33,11 +33,12 @@ html
               | Login
               span.sr-only (current)
       if user
-        span.nav-link= user.username
-        ul.navbar-nav.mr-auto
-          li.nav-item.active
-            a.nav-link(href='/logout')
-              | Logout
+        .btn-group(role='group')
+          button#btnGroupDrop1(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+           | #{user.firstName} #{user.lastName}
+          .dropdown-menu(aria-labelledby='btnGroupDrop1')
+            a.dropdown-item(href='/user/details/#{user._id}') Profile
+            a.dropdown-item(href='/logout') Logout
 
       
 
