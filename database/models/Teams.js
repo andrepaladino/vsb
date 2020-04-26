@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const TeamSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: [true, 'Team name is mandatory']
     },
     description: {
         type: String,
-        required: true
+        required: [true, 'Team description is mandatory']
     },
     image: String,
 

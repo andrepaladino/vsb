@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const RetroSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: [true, 'Retrospective title is mandatory']
     },
 
     participants: [{

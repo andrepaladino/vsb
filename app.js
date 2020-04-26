@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGODB_URI, { //ADD TO ENV
   useFindAndModify: false
 })
 
-app.use(connectFlash())
+
 
 app.use(expressSession({
   secret: process.env.EXPRESS_SECRET, //ADD TO ENV
@@ -243,6 +243,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(connectFlash())
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'))

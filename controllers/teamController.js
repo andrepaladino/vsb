@@ -15,7 +15,7 @@ module.exports.list = (req, res) => {
 
 //LOAD CREATE PAGE
 module.exports.create = (req, res) => {
-    return res.render('team_create', { pageTitle: 'Create Team' })
+    return res.render('team_create', { pageTitle: 'Create Team', errors: req.flash('registrationErrors')})
 }
 
 //CREATE NEW TEAM
@@ -37,10 +37,15 @@ module.exports.save = (req, res) => {
         updatedBy: req.session.user._id,
         updatedDate: Date.now()
     }, (err, result) => {
-        if (err)
+        if (err){
+            req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
             console.log(err)
-        else
+            res.redirect('/teams/create')
+
+        }
+        else{
             res.redirect('/teams')
+        }
     })
     console.log(req.file)
 }
@@ -51,7 +56,7 @@ module.exports.details = (req, res) => {
         if (err)
             console.log(err)
         else
-            res.render('team_details', { team: team, templates: RetroTemplates.loadTemplates })
+            res.render('team_details', { team: team, templates: RetroTemplates.loadTemplates, errors: req.flash('registrationErrors') })
     }).populate('leader').populate('members').populate('createdBy').populate('updatedBy').populate('retrospectives').populate('actionitems.owner').populate('actionitems.retrospective')
 }
 
@@ -76,20 +81,26 @@ module.exports.update = (req, res) => {
             image: currentImageName,
             updatedBy: req.session.user._id,
             updatedDate: Date.now()
-        }, (err, result) => {
-            if (err)
+        }, { runValidators: true }, (err, result) => {
+            if (err){
+                req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
                 console.log(err)
-            else
                 res.redirect('/teams/details/' + team._id)
+            }
+            else{
+                res.redirect('/teams/details/' + team._id)
+            }
         })
 
     })
 }
 
+//ADD TEAM MEMBER
 module.exports.addMember = (req, res) => {
 
     Users.findOne({ email: req.body.memberEmail }, (err, user) => {
         if (err || !user) {
+            req.flash('registrationErrors', 'Please, include a user email')
             return res.redirect('/teams/details/' + req.params.id)
         } else {
             Teams.findById((req.params.id), (err, team) => {
@@ -97,9 +108,11 @@ module.exports.addMember = (req, res) => {
                 if (team.members.includes(user._id)) {
                     return res.redirect('/teams/details/' + req.params.id)
                 } else {
-                    team.updateOne({ $push: { members: user } }, (err, result) => {
-                        if (err)
+                    team.updateOne({ $push: { members: user } }, { runValidators: true }, (err, result) => {
+                        if (err){
+                            req.flash('registrationErrors', 'An error occurred. Please, try again')
                             console.log(err)
+                        }
                         else
                             res.redirect('/teams/details/' + req.params.id)
                     })

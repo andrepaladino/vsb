@@ -5,6 +5,8 @@ block content
 
         h1= pageTitle
 
+
+
         if(errors)
             ul.list-group
                 each err in errors
@@ -13,16 +15,28 @@ block content
         form(name='register' method='post' action='/register')
             .form-group
                 label First Name
-                input.form-control(type='text' placeholder='Name' value='#{data.firstName||""}'  name='firstName')
+                if data
+                    input.form-control(type='text' placeholder='Name' value=data.firstName  name='firstName')
+                else
+                    input.form-control(type='text' placeholder='Name' name='firstName')
             .form-group
                 label Last Name
-                input.form-control(type='text' placeholder='Name' name='lastName')
+                if data
+                    input.form-control(type='text'  placeholder='Name' value=data.lastName name='lastName')
+                else
+                    input.form-control(type='text'  placeholder='Name' name='lastName')
             .form-group
                 label User Name
-                input.form-control(type='text' placeholder='Name' name='username')
+                if data
+                    input.form-control(type='text'  placeholder='Name' value=data.username name='username')
+                else
+                    input.form-control(type='text'  placeholder='Name' name='username')
             .form-group
                 label Email
-                input.form-control(type='email' placeholder='Email' name='email')
+                if data
+                    input.form-control(type='email' placeholder='Email' value=data.email name='email')
+                else
+                    input.form-control(type='email' placeholder='Email' name='email')                
             .form-group
                 label Password
                 input.form-control(type='password' placeholder='Password' name='password')

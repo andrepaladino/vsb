@@ -18,6 +18,7 @@ module.exports.create = (req, res) => {
 module.exports.save = (req, res) => {
     console.log('Team ID: ' + req.body.teamID)
     console.log(req.body.selectedTemplate)
+    var errors = []
 
     if(req.body.selectedTemplate != 0){
         var template = RetroTemplates.loadTemplates.templates.find(o => o.number == req.body.selectedTemplate);
@@ -31,8 +32,9 @@ module.exports.save = (req, res) => {
     
         }, (err, newRetro) => {
             if (err) {
+                req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
                 console.log(err)
-                return res.redirect('/teams')
+                return res.redirect('/teams/details/' + req.body.teamID)
             }
             else {
                 Teams.findById((req.body.teamID), (err, team) => {
@@ -46,6 +48,8 @@ module.exports.save = (req, res) => {
             }
         })
     }else{
+        errors.push('Select a retrospective template')
+        req.flash('registrationErrors', errors)
         res.redirect('/teams/details/' + req.body.teamID)
     }
     

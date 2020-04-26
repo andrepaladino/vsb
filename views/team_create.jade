@@ -5,10 +5,15 @@ block content
 
         h1= pageTitle
 
+        if(errors)
+            ul.list-group
+                each err in errors
+                    li.list-group-item.text-danger= err
+
         form(name='register', method='post', action='/teams/create', encType = 'multipart/form-data')
             .form-group
-                label(for='exampleFormControlInput1') Name
-                input#exampleFormControlInput1.form-control(type='text' placeholder='Team Name', name='name')
+                label Name
+                input.form-control(type='text' placeholder='Team Name' name='name')
             .form-group
                 label Description
                 textarea.form-control(maxlength='50', placeholder='Description', name='description')

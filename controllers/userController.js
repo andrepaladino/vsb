@@ -36,8 +36,7 @@ module.exports.loginUser = (req, res) => {
 
 //LOAD REGISTER PAGE
 module.exports.register = (req, res) => {
-    console.log(req.flash('data'))
-    res.render('register', { pageTitle: 'Register', errors: req.flash('registrationErrors'), data: req.flash('data') })
+    res.render('register', { pageTitle: 'Register', errors: req.flash('error_messages'), data: req.flash('data')[0] })
 }
 
 //SUBMIT REGISTRATION
@@ -53,8 +52,8 @@ module.exports.registerUser = (req, res) => {
         password: req.body.password
     }, (err, result) => {
         if (err) {
-            req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
-            req.flash('data', req.body.firstname)
+            req.flash('error_messages', Object.keys(err.errors).map(key => err.errors[key].message))
+            req.flash('data', req.body)
             return res.redirect('/register')
         }
         else {

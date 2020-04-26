@@ -37,6 +37,10 @@ block content
                         input(class='btn btn-success' type='submit' value='Save')
 
                 .col-md-6
+                    if(errors)
+                            ul.list-group
+                                each err in errors
+                                    li.list-group-item.text-danger= err
                     div.area
                         h1 Open Action Items
                         table.table
