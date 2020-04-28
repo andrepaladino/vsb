@@ -1,0 +1,43 @@
+extends layout
+
+block content
+
+    div.area
+        h1 Retrospective | #{retro.name}
+        .row
+            .col-md-6
+                each category in retro.retroTemplate.categories
+                    h3=category.name
+                    table.table
+                        thead
+                            tr
+                                th(scope='col') Input
+                                th(scope='col') User
+                                th(scope='col') Likes
+                        tbody
+                            each input in retro.inputs
+                                if(input.category == category.id)
+                                    tr
+                                        th #{input.text}
+                                        th #{input.user.username}
+                                        th #{input.likes.length}
+            .col-md-3
+                h3 Action Items
+                table.table
+                        thead
+                            tr
+                                th(scope='col') Action Item
+                        tbody(id='actionitems')
+                            each ai in retro.actionitems
+                                    tr
+                                        th #{ai.text}
+            .col-md-3
+                div#participants.participants
+                    h2 Attendees
+                    div
+                        each m in retro.attendees
+                            .user(id="#{m._id}")
+                                a.avatar.teammember(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
+                                .infosPlayer
+                                    span.nick=m.username
+                

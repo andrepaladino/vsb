@@ -64,6 +64,12 @@ io.on('connection', socket => {
     socket.join(retroid)
 
     Retros.findById(retroid, (err, retro) => {
+
+      if (!retro.attendees.includes(userid)) {
+        retro.updateOne({ $push: { attendees: userid } }, (err, result) => {
+        })
+      }
+      
       if (!retro.participants.includes(userid)) {
         retro.updateOne({ $push: { participants: userid } }, (err, result) => {
         })

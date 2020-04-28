@@ -208,6 +208,26 @@ $('.previousstep').on('click', function (e) {
     });
 })
 
+$('.completeRetro').on('click', function (e) {
+    var r = confirm("Are you sure you want to finish this meeting?")
+    var retroid = $('input[name=retroID]').val();
+
+    if(r == true){
+        console.log('Complete Retrospective')
+        $.ajax({
+            type: 'POST',
+            url: '/retro/live/complete/' + retroid,
+            success: function (response) {
+                window.location.href = '/retro/complete/'+retroid
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+
+    }
+})
+
 
 $('#chat').submit(function (event) {
     event.preventDefault();

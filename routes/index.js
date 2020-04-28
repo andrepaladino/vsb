@@ -104,6 +104,12 @@ router.get('/retro/live/next/:id', authController.auth, retroController.nextStep
 //LIVE RETRO PREVIOUS STEP
 router.get('/retro/live/previous/:id', authController.auth, retroController.previousStep)
 
+//LIVE RETRO COMPLETE MEETING
+router.post('/retro/live/complete/:id', authController.auth, retroController.completeRetrospective)
+
+//RETRO COMPLETED MEETING
+router.get('/retro/complete/:id', authController.auth, retroController.completedRetro)
+
 
 
 module.exports = router;

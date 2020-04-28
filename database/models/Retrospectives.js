@@ -12,6 +12,12 @@ const RetroSchema = new mongoose.Schema({
         required : true
     }],
 
+    attendees: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required : true
+    }],
+
     team: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Teams',
@@ -31,6 +37,18 @@ const RetroSchema = new mongoose.Schema({
 
     retroTemplate: {
     },
+
+    actionitems: [{
+        text:{
+            type: String
+        },
+
+        owner:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+
+    }],
 
     createdDate: Date,
 

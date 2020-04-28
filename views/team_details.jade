@@ -29,7 +29,7 @@ block content
                             input.form-control(type='text' readonly='' value='#{team.updatedBy.username}')
                         .form-group
                             label Updated Date
-                            input.form-control(type='text' readonly='' value='#{team.updatedDate}')
+                            input.form-control(type='text' readonly='' value='#{team.updatedDate.toLocaleTimeString()}')
                         .form-group 
                             input(type='file' class='form-control-file' name='image')
                         .form-group 
@@ -86,16 +86,23 @@ block content
                                 tr
                                     th(scope='col') Title
                                     th(scope='col') Date
+                                    th(scope='col') Status
                                     th(scope='col') Join
                             tbody
                                 each i in team.retrospectives
                                     tr
                                         th #{i.name}
-                                        th #{i.createdDate}
+                                        th.date-util() #{i.createdDate}
+                                        th #{i.status}
                                         th
-                                            a.btn.btn-info(id='join' href='/retro/live/#{i.id}')
-                                                span.material-icons
-                                                    | play_circle_outline
+                                            if i.status === 'COMPLETED'
+                                                a.btn.btn-info(href='/retro/complete/#{i.id}')
+                                                    span.material-icons
+                                                        | play_circle_outline
+                                            else
+                                                a.btn.btn-info(id='join' href='/retro/live/#{i.id}')
+                                                    span.material-icons
+                                                        | play_circle_outline
                                         //- th    
                                         //-   a.btn.btn-danger.remove-member(href='#' team-id = team.id member-id = i._id)
                                         //-     span.glyphicon.glyphicon-remove\
