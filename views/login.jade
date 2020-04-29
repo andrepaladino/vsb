@@ -2,18 +2,18 @@ extends layout
 
 block content
     div.area
+        .login
+            h1= pageTitle
 
-        h1= pageTitle
-
-        form(name='register', method='post', action='/login')
-            .form-group
-                label Email
-                input.form-control(type='email' placeholder='Email', name='email')
-            .form-group
-                label Password
-                input.form-control(type='password', placeholder='Password', name='password')
-            
-            input(class='btn btn-success', type='submit', value='add')
-            a.btn.btn-default(href='/register') Register
+            form(name='register', method='post', action='/login')
+                .form-group
+                    label Email
+                    input.form-control(type='email' placeholder='Email', name='email')
+                .form-group
+                    label Password
+                    input.form-control(type='password', placeholder='Password', name='password')
+                
+                input(class='btn btn-success', type='submit', value='add')
+                a.btn.btn-default(href='/register') Register
 
 
