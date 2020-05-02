@@ -43,6 +43,7 @@ block content
                                     li.list-group-item.text-danger= err
                     div.area
                         h1 Open Action Items
+                        input#myInput.form-control(type='text' placeholder='Search..')
                         table.table
                             thead
                                 tr
@@ -51,7 +52,7 @@ block content
                                     th(scope='col') Complete
                                     th(scole='col') Cancel
                                     th(scole='col') Status
-                            tbody
+                            tbody#myTable
                                 each i in team.actionitems
                                     tr
                                         th #{i.text}
