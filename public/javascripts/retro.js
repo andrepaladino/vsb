@@ -11,7 +11,6 @@ window.onbeforeunload = function (e) {
     var userid = $('input[name=user]').val();
     var disconect = { retroid, userid }
     socket.emit('leavePage', (disconect))
-    console.log('ja vai?')
 };
 
 $(function () {
@@ -172,18 +171,18 @@ function renderMessage(messageObject) {
         console.log(data.owner)
         $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username + '</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>  <th>' + data.actionitem.status + '</th></tr>')
     })
-
 }
 
 
 $('.nextstep').on('click', function (e) {
     console.log('Click Next Step')
     var retroid = $('input[name=retroID]').val();
-    socket.emit('nextStep', retroid)
     $.ajax({
         type: 'GET',
         url: '/retro/live/next/' + retroid,
         success: function (response) {
+            location.reload()
+            socket.emit('nextStep', retroid)
         },
         error: function (err) {
             console.log(err);
@@ -191,16 +190,14 @@ $('.nextstep').on('click', function (e) {
     });
 })
 
-
-
-
 $('.previousstep').on('click', function (e) {
     var retroid = $('input[name=retroID]').val();
-    socket.emit('nextStep', retroid)
     $.ajax({
         type: 'GET',
         url: '/retro/live/previous/' + retroid,
         success: function (response) {
+            location.reload()
+            socket.emit('nextStep', retroid)
         },
         error: function (err) {
             console.log(err);

@@ -55,7 +55,6 @@ server.listen(PORT, () => {
   console.log(`Our app is running on port ${PORT}`);
 });
 
-
 io.on('connection', socket => {
   socket.removeAllListeners()
   console.log('Socket conectado: ' + socket.id)
@@ -69,7 +68,7 @@ io.on('connection', socket => {
         retro.updateOne({ $push: { attendees: userid } }, (err, result) => {
         })
       }
-      
+
       if (!retro.participants.includes(userid)) {
         retro.updateOne({ $push: { participants: userid } }, (err, result) => {
         })
@@ -105,6 +104,11 @@ io.on('connection', socket => {
     })
     io.to(disconect.retroid).emit('offlineUser', disconect.userid)
   });
+
+  socket.on('nextStep', (data) => {
+    console.log('Next Step :' + data)
+    socket.to(data).emit('goToNext', { retroid: data })
+  })
 
   socket.on('changePosition', (coord) => {
     Inputs.findByIdAndUpdate(coord.element, { category: coord.target, positionLeft: coord.left, positionTop: coord.top }, (err, result) => {
@@ -189,11 +193,22 @@ io.on('connection', socket => {
   })
 
   socket.on('deleteInput', (input) => {
-    Inputs.findByIdAndDelete(input.inputid, (err, result) => {
-      io.to(input.retroid.toString()).emit('removeInput', result)
+    Retros.findByIdAndUpdate(input.retroid, { $pull: { inputs: input.inputid } }, (err, result) => {
+      if (err) {
+        console.log(err)
+      } else {
+
+        Inputs.findByIdAndDelete(input.inputid, (err, resultInput) => {
+          if (err) {
+            console.log(err)
+          }
+          else {
+          }
+          io.to(input.retroid.toString()).emit('removeInput', resultInput)
+        })
+      }
     })
   })
-
 
   socket.on('createAction', (action) => {
     console.log('Creating Action Item:')
@@ -211,10 +226,7 @@ io.on('connection', socket => {
       })
     })
   })
-  socket.on('nextStep', (data) => {
-    console.log('Next Step :' + data)
-    io.to(data).emit('goToNext', {retroid: data})
-  })
+
   socket.on('cancelActionItem', (actionid) => {
     Teams.findOneAndUpdate({ actionitems: { $elemMatch: { _id: actionid } } }, { $set: { 'actionitems.$.status': 'CANCELLED' } }, { new: true }, (err, result) => {
       if (err) {
@@ -237,9 +249,7 @@ io.on('connection', socket => {
     })
   })
 
-
 })
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
