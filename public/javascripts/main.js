@@ -24,7 +24,7 @@ $(document).ready(function () {
         console.log(e.target)
         const teamId = $target.attr('team-id');
         const memberId = $target.attr('member-id');
-        console.log('member-id: ' +memberId)
+        console.log('member-id: ' + memberId)
 
         $.ajax({
             type: 'POST',
@@ -42,14 +42,27 @@ $(document).ready(function () {
 });
 
 
-$(document).ready(function(){
-    $("#myInput").on("keyup", function() {
-      var value = $(this).val().toLowerCase();
-      $("#myTable tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
+$(document).ready(function () {
+    $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
     });
-  });
+});
+
+$(document).ready(function () {
+    $("#filterStatus").on('click', function () {
+        var status = $('#StatusOptions').val();
+        if (status === 'ALL') {
+            $("#myTable tr").show()
+        } else {
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).children(':eq(4)').text().indexOf(status) > -1)
+            });
+        }
+    })
+})
 
 
 

@@ -42,9 +42,21 @@ block content
                                 each err in errors
                                     li.list-group-item.text-danger= err
                     div.area
-                        h1 Open Action Items
+                        h1 Action Items
                         input#myInput.form-control(type='text' placeholder='Search..')
-                        table.table
+                        lable Status Filter
+                        .row
+                            .col
+                                
+                                select.form-control#StatusOptions(name='selectedStatus')
+                                    option(value='ALL') All
+                                    option(value='NEW') New
+                                    option(value='COMPLETED') Completed
+                                    option(value='CANCELLED') Cancelled
+                            .col
+                                a.btn.btn-success#filterStatus(href='#') Filter
+                        </br>
+                        table.table#actionItems
                             thead
                                 tr
                                     th(scope='col') Action Item
@@ -125,3 +137,5 @@ block content
                                 label Add Team Member
                                 input.form-control(type='text' placeholder='member@email.com' name='memberEmail')
                             input(class='btn btn-success' type='submit' value='Add')
+
+
