@@ -160,18 +160,20 @@ function renderMessage(messageObject) {
         });
     })
 
-    socket.on('goToNext', function (data) {
-        console.log(data.retroid)
-        location.reload()
-    })
-
-
-    socket.on('createActionItem', function (data) {
-        console.log(data.actionitem)
-        console.log(data.owner)
-        $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username + '</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>  <th>' + data.actionitem.status + '</th></tr>')
-    })
 }
+
+socket.on('goToNext', function (data) {
+    console.log(data.retroid)
+    location.reload()
+})
+
+
+socket.on('createActionItem', function (data) {
+    console.log(data.actionitem)
+    console.log(data.owner)
+    $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username + '</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>  <th>' + data.actionitem.status + '</th></tr>')
+})
+
 
 
 $('.nextstep').on('click', function (e) {
@@ -209,13 +211,13 @@ $('.completeRetro').on('click', function (e) {
     var r = confirm("Are you sure you want to finish this meeting?")
     var retroid = $('input[name=retroID]').val();
 
-    if(r == true){
+    if (r == true) {
         console.log('Complete Retrospective')
         $.ajax({
             type: 'POST',
             url: '/retro/live/complete/' + retroid,
             success: function (response) {
-                window.location.href = '/retro/complete/'+retroid
+                window.location.href = '/retro/complete/' + retroid
             },
             error: function (err) {
                 console.log(err);
