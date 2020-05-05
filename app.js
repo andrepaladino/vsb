@@ -224,7 +224,7 @@ io.on('connection', socket => {
           io.to(action.retroid).emit('createActionItem', { actionitem: team.actionitems.pop(), owner: user })
         }
       })
-    })
+    }).populate('actionitems.retrospective')
   })
 
   socket.on('cancelActionItem', (actionid) => {

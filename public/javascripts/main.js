@@ -41,12 +41,18 @@ $(document).ready(function () {
     });
 });
 
-
 $(document).ready(function () {
-    $("#myInput").on("keyup", function () {
+    $("#searchAction").on("keyup", function () {
         var value = $(this).val().toLowerCase();
         $("#myTable tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $(this).toggle($(this).children(':eq(0)').text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    $("#searchActionOwner").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function () {
+            $(this).toggle($(this).children(':eq(1)').text().toLowerCase().indexOf(value) > -1)
         });
     });
 });

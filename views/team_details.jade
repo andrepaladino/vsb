@@ -43,7 +43,8 @@ block content
                                     li.list-group-item.text-danger= err
                     div.area
                         h1 Action Items
-                        input#myInput.form-control(type='text' placeholder='Search..')
+                        input#searchAction.form-control(type='text' placeholder='Search Action Item...')
+                        input#searchActionOwner.form-control(type='text' placeholder='Search Owner...')
                         lable Status Filter
                         .row
                             .col
@@ -78,6 +79,7 @@ block content
                                                 span.material-icons(action-id = i._id)
                                                     |   clear
                                         th #{i.status}
+
                         h1 Retrospectives
                         form(name='newRetro' method='post' action='/retro/create')
                             .form-group
@@ -90,6 +92,7 @@ block content
                                                 option(value='#{t.number}')=t.name
                                     .col.5
                                         input(type='hidden' name='teamID' value='#{team.id}')
+                                        input(type='hidden' name='user' value='#{user._id}')
                                         input.form-control(type='text' placeholder='Title' name='retrospective')
                                     .col.2
                                         input(class='btn btn-success' type='submit' value='Create')

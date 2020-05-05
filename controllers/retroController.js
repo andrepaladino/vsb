@@ -20,40 +20,47 @@ module.exports.save = (req, res) => {
     console.log(req.body.selectedTemplate)
     var errors = []
 
-    if (req.body.selectedTemplate != 0) {
-        var template = RetroTemplates.loadTemplates.templates.find(o => o.number == req.body.selectedTemplate);
-
-        console.log(template)
-        Retros.create({
-            team: req.body.teamID,
-            name: req.body.retrospective.trim(),
-            retroTemplate: template,
-            createdDate: Date.now()
-
-        }, (err, newRetro) => {
-            if (err) {
-                req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
-                console.log(err)
-                return res.redirect('/teams/details/' + req.body.teamID)
-            }
-            else {
-                Teams.findById((req.body.teamID), (err, team) => {
-                    team.updateOne({ $push: { retrospectives: newRetro } }, (err, result) => {
-                        if (err)
-                            console.log(err)
-                        else
-                            res.redirect('/teams/details/' + team._id)
-                    })
+    Teams.findById(req.body.teamID, (err, t) => {
+        if(t.leader == req.body.user){
+            if (req.body.selectedTemplate != 0) {
+                var template = RetroTemplates.loadTemplates.templates.find(o => o.number == req.body.selectedTemplate);
+        
+                console.log(template)
+                Retros.create({
+                    team: req.body.teamID,
+                    name: req.body.retrospective.trim(),
+                    retroTemplate: template,
+                    createdDate: Date.now()
+        
+                }, (err, newRetro) => {
+                    if (err) {
+                        req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
+                        console.log(err)
+                        return res.redirect('/teams/details/' + req.body.teamID)
+                    }
+                    else {
+                        Teams.findById((req.body.teamID), (err, team) => {
+                            team.updateOne({ $push: { retrospectives: newRetro } }, (err, result) => {
+                                if (err)
+                                    console.log(err)
+                                else
+                                    res.redirect('/teams/details/' + team._id)
+                            })
+                        })
+                    }
                 })
+            } else {
+                errors.push('Select a retrospective template')
+                req.flash('registrationErrors', errors)
+                res.redirect('/teams/details/' + req.body.teamID)
             }
-        })
-    } else {
-        errors.push('Select a retrospective template')
-        req.flash('registrationErrors', errors)
-        res.redirect('/teams/details/' + req.body.teamID)
-    }
+        }else{
+            errors.push('Only a team leader can start a retrospective')
+            req.flash('registrationErrors', errors)
+            res.redirect('/teams/details/' + req.body.teamID)
 
-
+        }
+    })
 }
 
 module.exports.live = (req, res) => {

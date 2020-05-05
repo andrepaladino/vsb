@@ -4,28 +4,28 @@ block content
 
     div.area
         h1 Retrospective | #{retro.name}
+            input(type='hidden' name='user' value='#{user._id}')
+            input(type='hidden' name='retroID' value='#{retro._id}')
+            input(type='hidden' name='retroTemplateNumber' value='#{retro.retroTemplate.number}')
         .input-group.mb-3
-        .row.row-cols-3
-            .col
-                select#inputCategory.form-control
-                    each i in retro.retroTemplate.categories
-                        option(value='#{i.id}')=i.name
-            .col
+        if(retro.status == 'INPROGRESS')
+            .row.row-cols-3
+                .col
+                    select#inputCategory.form-control
+                        each i in retro.retroTemplate.categories
+                            option(value='#{i.id}')=i.name
+                .col
                     form(id='chat')
-                        input(type='hidden' name='user' value='#{user._id}')
-                        input(type='hidden' name='retroID' value='#{retro._id}')
-                        input(type='hidden' name='retroTemplateNumber' value='#{retro.retroTemplate.number}')
                         input.form-control(type='text' name='message')
-                        if(retro.status == 'INPROGRESS')
-                            input(class='btn btn-success' type='submit' value='Save')
-        </br>
-        if retro.status != 'NEW'
-            a.btn.btn-success.previousstep(href='#') Previous
-        if retro.status != 'REVIEW'
-            a.btn.btn-success.nextstep(href='#') Next
-        else
-            a.btn.btn-success.completeRetro(href='#') Complete
-
+                        input(class='btn btn-success' type='submit' value='Add')
+            </br>
+        if team.leader == user._id
+            if retro.status != 'NEW'
+                a.btn.btn-success.previousstep(href='#' ) Previous
+            if retro.status != 'REVIEW'
+                a.btn.btn-success.nextstep(href='#' ) Next
+            else
+                a.btn.btn-success.completeRetro(href='#') Complete
         .row
             .col-md-10
                 if(retro.status == 'NEW')
@@ -58,69 +58,46 @@ block content
                 if(retro.status == 'INPROGRESS')
                     div#includedContent
                 if(retro.status == 'REVIEW')
-                    .row
-                        .col-md-3
-                            form(id='actionitem')
-                                input.form-control(type='text' placeholder='Action' name='actionitem')
-                                select.form-control(name='selectMember')
-                                    each m in team.members
-                                        option(value='#{m._id}')=m.username
-                                input(class='btn btn-success' type='submit' value='Add')
-                        h1 REVIEW
-                        table.table
-                            thead
-                                tr
-                                    th(scope='col') Action Item
-                                    th(scope='col') Owner
-                                    th(scole='col') Retro
-                                    th(scole='col') Status
-                                    th(scope='col') Complete
-                                    th(scole='col') Cancel
-                            tbody(id='actionitems')
-                                each ai in team.actionitems
-                                        if(ai.status == "NEW")
-                                            tr
-                                                th #{ai.text}
-                                                th #{ai.owner.username}
-                                                th #{ai.retrospective.name}
-                                                th #{ai.status}
-                                                th    
-                                                    a.btn.btn-info(href='#')
-                                                        span.material-icons.complete-action(action-id = ai._id)
-                                                            |   done_outline
-                                                th    
-                                                    a.btn.btn-danger.cancel-action(href='#')
-                                                        span.material-icons(action-id = ai._id)
-                                                            |   clear
-                if(retro.status == 'COMPLETED')
-                    h1 Completed
-                        each category in retro.retroTemplate.categories
-                            h3=category.name
-                            table.table
-                                thead
-                                    tr
-                                        th(scope='col') Input
-                                        th(scope='col') User
-                                tbody
-                                    each input in retro.inputs
-                                        if(input.category == category.id)
-                                            tr
-                                                th #{input.text}
-                                                th #{input.user.username}
-
-                    h1 Action Items
+                    h3 Review
+                        form(id='actionitem')
+                            .row
+                                .col-md-3
+                                    label Action Item
+                                    input.form-control(type='text' placeholder='Action Item' name='actionitem')
+                                .col-md-3
+                                    label Owner
+                                    select.form-control(name='selectMember')
+                                        each m in team.members
+                                            option(value='#{m._id}')=m.username
+                                .col-md-3
+                                    </br>
+                                    input(class='btn btn-success' type='submit' value='Add')
+                        </br>
                     table.table
-                            thead
-                                tr
-                                    th(scope='col') Action Item
-                                    th(scope='col') Owner
-                                    th(scole='col') Status
-                            tbody(id='actionitems')
-                                each ai in team.actionitems
-                                        tr
-                                            th #{ai.text}
-                                            th #{ai.owner.username}
-                                            th #{ai.status}    
+                        thead
+                            tr
+                                th(scope='col') Action Item
+                                th(scope='col') Owner
+                                th(scole='col') Retro
+                                th(scole='col') Status
+                                th(scope='col') Complete
+                                th(scole='col') Cancel
+                        tbody(id='actionitems')
+                            each ai in team.actionitems
+                                if(ai.status == "NEW")
+                                    tr
+                                        th #{ai.text}
+                                        th #{ai.owner.username}
+                                        th #{ai.retrospective.name}
+                                        th #{ai.status}
+                                        th    
+                                            a.btn.btn-info(href='#')
+                                                span.material-icons.complete-action(action-id = ai._id)
+                                                    |   done_outline
+                                        th    
+                                            a.btn.btn-danger.cancel-action(href='#')
+                                                span.material-icons(action-id = ai._id)
+                                                    |   clear
             .col-md-2
                 div#participants.participants
                     h2 Participants
