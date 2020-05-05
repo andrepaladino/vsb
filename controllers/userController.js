@@ -8,30 +8,38 @@ module.exports.index = (req, res) => {
 
 //LOAD LOGIN PAGE
 module.exports.login = (req, res) => {
-    res.render('login', { pageTitle: 'Login' })
+    res.render('login', { pageTitle: 'Login', errors: req.flash('registrationErrors') })
 }
 
 //SUBMIT LOGIN
 module.exports.loginUser = (req, res) => {
 
-    Users.findOne({ email: req.body.email }, (err, user) => {
-
-        if (user) {
-            bcrypt.compare(req.body.password, user.password, (err, same) => {
-                if (same) {
-                    req.session.user = user
-                    console.log(req.session)
-                    return res.redirect('/')
-                }
-                else {
-                    return res.redirect('/login')
-                }
-            })
-        }
-        else {
-            res.redirect('/login')
-        }
-    })
+    if(!req.body.email || !req.body.password){
+        req.flash('registrationErrors', 'Please, provide Email and Password')
+        res.redirect('/login')
+    }else{
+        Users.findOne({ email: req.body.email }, (err, user) => {
+    
+            if (user) {
+                bcrypt.compare(req.body.password, user.password, (err, same) => {
+                    if (same) {
+                        req.session.user = user
+                        console.log(req.session)
+                        return res.redirect('/')
+                    }
+                    else {
+                        req.flash('registrationErrors', 'Email or Password invalid')
+                        return res.redirect('/login')
+                    }
+                })
+            }
+            else {
+                console.log(err)
+                req.flash('registrationErrors', 'Email or Password invalid')
+                res.redirect('/login')
+            }
+        })
+    }
 }
 
 //LOAD REGISTER PAGE
