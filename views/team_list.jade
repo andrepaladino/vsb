@@ -12,7 +12,7 @@ block content
                     th(scope='col') Name
                     th(scope='col') Description
                     th(scope='col') Edit
-                    th(scole='col') Delete
+                    th(scole='col') Members
             tbody
                 each i in list
                     tr
@@ -21,8 +21,6 @@ block content
                         th    
                             a.btn.btn-info(href='/teams/details/#{i.id}')
                                 span.material-icons
-                                    | edit
-                        th    
-                            a.btn.btn-danger.delete-team(href='#', data-id = i.id)
-                                span.material-icons
-                                    | delete_forever
+                                    | details
+                        th #{i.members.length}
+

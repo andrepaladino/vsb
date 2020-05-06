@@ -113,7 +113,7 @@ function renderMessage(messageObject) {
         }
     });
 
-    $(".remove-input").on("click", function () {
+    $(".remove-input").off().on("click", function () {
         var r = confirm("Are you sure you want to remove this card?")
         if (r == true) {
             var inputid = $(this).context.parentElement.id
@@ -123,7 +123,7 @@ function renderMessage(messageObject) {
         }
     });
 
-    $(".like-input").on("click", function () {
+    $(".like-input").off().on("click", function () {
         var inputid = $(this).context.parentElement.id
         var retroid = $('input[name=retroID]').val();
         var userid = $('input[name=user]').val();
@@ -248,6 +248,9 @@ $('#chat').submit(function (event) {
         };
         socket.emit('sendMessage', messageObject);
     }
+
+    $('input[name=message]').val('')
+
 })
 
 

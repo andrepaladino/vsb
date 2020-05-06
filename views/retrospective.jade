@@ -8,17 +8,7 @@ block content
             input(type='hidden' name='retroID' value='#{retro._id}')
             input(type='hidden' name='retroTemplateNumber' value='#{retro.retroTemplate.number}')
         .input-group.mb-3
-        if(retro.status == 'INPROGRESS')
-            .row.row-cols-3
-                .col
-                    select#inputCategory.form-control
-                        each i in retro.retroTemplate.categories
-                            option(value='#{i.id}')=i.name
-                .col
-                    form(id='chat')
-                        input.form-control(type='text' name='message')
-                        input(class='btn btn-success' type='submit' value='Add')
-            </br>
+
         if team.leader == user._id
             if retro.status != 'NEW'
                 a.btn.btn-success.previousstep(href='#' ) Previous
@@ -26,6 +16,17 @@ block content
                 a.btn.btn-success.nextstep(href='#' ) Next
             else
                 a.btn.btn-success.completeRetro(href='#') Complete
+    
+        if retro.status == 'INPROGRESS'
+            form.form-inline#chat
+                .form-group.mb-2
+                    select#inputCategory.form-control
+                        each i in retro.retroTemplate.categories
+                            option(value='#{i.id}')=i.name
+                .form-group.mx-sm-3.mb-2
+                    label.sr-only(for='inputPassword2') Password
+                    input#inputPassword2.form-control(type='text' name='message')
+                button.btn.btn-primary.mb-2(type='submit') Add
         .row
             .col-md-10
                 if(retro.status == 'NEW')
@@ -99,7 +100,7 @@ block content
                                                 span.material-icons(action-id = ai._id)
                                                     |   clear
             .col-md-2
-                div#participants.participants
+                div#participants
                     h2 Participants
                     div
                         each m in team.members

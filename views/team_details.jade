@@ -4,6 +4,7 @@ block content
 
     div.area
         h1 Team | #{team.name}
+        input(type='hidden' name='userEmails' value='#{userEmails}')
         div
             .row
                 .col-md-3
@@ -109,36 +110,39 @@ block content
                                     tr
                                         th #{i.name}
                                         th.date-util() #{i.createdDate}
-                                        th #{i.status}
+                                        th
+                                            if i.status == 'NEW' || i.status == 'INPROGRESS'
+                                                span.material-icons(style='color: red' title="Live") 
+                                                 | settings_input_antenna
+                                            else
+                                                span.material-icons(style='color: blue' title="Completed") 
+                                                 | flag                                              
                                         th
                                             if i.status === 'COMPLETED'
-                                                a.btn.btn-info(href='/retro/complete/#{i.id}')
+                                                a(href='/retro/complete/#{i.id}')
                                                     span.material-icons
                                                         | play_circle_outline
                                             else
-                                                a.btn.btn-info(id='join' href='/retro/live/#{i.id}')
+                                                a(id='join' href='/retro/live/#{i.id}')
                                                     span.material-icons
                                                         | play_circle_outline
-                                        //- th    
-                                        //-   a.btn.btn-danger.remove-member(href='#' team-id = team.id member-id = i._id)
-                                        //-     span.glyphicon.glyphicon-remove\
                 .col-md-3
                     div#participants
-                    h2 Members
-                    div
-                        each m in team.members
-                            .user(id="#{m._id}")
-                                a.avatar.teammember(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
-                                .infosPlayer
-                                    span.nick=m.username
-                                    a.remove-member(href='#')
-                                        span.material-icons(href='#' team-id = team._id member-id = m._id style="color:red")
-                                            | delete
-                    div.area
-                        form(name='addmember' method='post' action='/teams/add/member/#{team.id}')
-                            .form-group
-                                label Add Team Member
-                                input.form-control(type='text' placeholder='member@email.com' name='memberEmail')
-                            input(class='btn btn-success' type='submit' value='Add')
+                        h2 Members
+                        div
+                            each m in team.members
+                                .user(id="#{m._id}")
+                                    a.avatar.teammember(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
+                                    .infosPlayer
+                                        span.nick=m.username
+                                        a.remove-member(href='#')
+                                            span.material-icons(href='#' team-id = team._id member-id = m._id style="color:red")
+                                                | delete
+                        div
+                            form(name='addmember' method='post' action='/teams/add/member/#{team.id}')
+                                .form-group
+                                    label Add Team Member
+                                    input.form-control#addMemberInput(type='text' placeholder='member@email.com' name='memberEmail')
+                                input(class='btn btn-success' type='submit' value='Add')
 
 
