@@ -11,6 +11,7 @@ const teamController = require('../controllers/teamController')
 const userController = require('../controllers/userController')
 const authController = require('../controllers/authController')
 const retroController = require('../controllers/retroController')
+const actionController = require('../controllers/actionController')
 
 const app = express()
 
@@ -91,6 +92,18 @@ router.post('/teams/remove/member/:id', authController.auth, teamController.remo
 
 //DELETE TEAM
 router.delete('/teams/delete/:id/', authController.auth, teamController.delete)
+
+//CREATE ACTION ITEM
+// router.post('/action/create', authController.auth, actionController.save)
+
+//COMPLETE ACTION ITEM
+router.get('/action/complete/:id/', authController.auth, actionController.complete)
+
+//CANCEL ACTION ITEM
+router.get('/action/cancel/:id/', authController.auth, actionController.cancel)
+
+//REOPEN ACTION ITEM
+router.get('/action/open/:id/', authController.auth, actionController.open)
 
 //CREATE TEAM RETROSPECTIVE
 router.post('/retro/create', authController.auth, retroController.save)

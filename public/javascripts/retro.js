@@ -174,8 +174,8 @@ socket.on('createActionItem', function (data) {
     $('#actionitems').append('<tr><th>'+data.actionitem.text+'</th><th>'+data.owner.username+'</th><th>' +data.actionitem.retrospective.name+ '</th><th>'+data.actionitem.status+'</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>')
 })
 
-socket.on('cancelledActionItem', function (data) {
-
+socket.on('completedActionItem', function (data) {
+    location.reload()
 })
 
 
@@ -277,20 +277,48 @@ $(document).ready(function () {
         $target = $(e.target);
 
         const actionid = $target.attr('action-id');
-        console.log('Remove Action Item: ' + actionid)
+        var retroid = $('input[name=retroID]').val();
+        console.log('Complete Action Item: ' + actionid)
 
-        socket.emit('cancelActionItem', actionid)
+        var action = {actionid:actionid, retroid:retroid }
+
+        $.ajax({
+            type: 'GET',
+            url: '/action/cancel/' + actionid,
+            success: function (response) {
+                socket.emit('completeActionItem', action)
+                location.reload()
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
     });
 });
 
 $(document).ready(function () {
-    $('.complete-action').on('click', function (e) {
+    $('#completeAction').on('click', function (e) {
         $target = $(e.target);
 
         const actionid = $target.attr('action-id');
+        var retroid = $('input[name=retroID]').val();
+
         console.log('Complete Action Item: ' + actionid)
 
-        socket.emit('completeActionItem', actionid)
+        var action = {actionid:actionid, retroid:retroid }
+
+        $.ajax({
+            type: 'GET',
+            url: '/action/complete/' + actionid,
+            success: function (response) {
+                socket.emit('completeActionItem', action)
+                location.reload()
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+
     });
 });
 

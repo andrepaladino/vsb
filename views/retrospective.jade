@@ -38,8 +38,7 @@ block content
                                 th(scope='col') Owner
                                 th(scole='col') Retro
                                 th(scole='col') Status
-                                th(scope='col') Complete
-                                th(scole='col') Cancel
+                                th(scope='col') 
                         tbody
                             each i in team.actionitems
                                 if(i.status == "NEW")
@@ -49,13 +48,15 @@ block content
                                         th #{i.retrospective.name}
                                         th #{i.status}
                                         th    
-                                            a.btn.btn-info.complete-action(href='#')
-                                                span.material-icons(action-id = i._id)
-                                                    |   done_outline
-                                        th    
-                                            a.btn.btn-danger.cancel-action(href='#')
-                                                span.material-icons(action-id = i._id)
-                                                    |   clear
+                                            .btn-group(role='group')
+                                                button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                                    | more_horiz
+                                                .dropdown-menu(aria-labelledby='btnGroupDrop1')
+                                                    if i.status == 'NEW'
+                                                        a.dropdown-item#completeAction(href='#' action-id = i._id) Complete
+                                                        a.dropdown-item#cancelAction(href='#' action-id = i._id) Cancel
+                                                    else
+                                                        a.dropdown-item#openAction(href='#' action-id = i._id) Open
                 if(retro.status == 'INPROGRESS')
                     div#includedContent
                 if(retro.status == 'REVIEW')

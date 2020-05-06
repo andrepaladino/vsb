@@ -63,24 +63,26 @@ block content
                                 tr
                                     th(scope='col') Action Item
                                     th(scope='col') Owner
-                                    th(scope='col') Complete
-                                    th(scole='col') Cancel
+                                    th(scole='col') Retro
                                     th(scole='col') Status
+                                    th(scope='col') 
                             tbody#myTable
                                 each i in team.actionitems
                                     tr
                                         th #{i.text}
                                         th #{i.owner.username}
-                                        th    
-                                            a.btn.btn-info.complete-action(href='#')
-                                                span.material-icons(action-id = i._id)
-                                                    |   done_outline
-                                        th    
-                                            a.btn.btn-danger.cancel-action(href='#')
-                                                span.material-icons(action-id = i._id)
-                                                    |   clear
+                                        th #{i.retrospective.name}
                                         th #{i.status}
-
+                                        th
+                                            .btn-group(role='group')
+                                                button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                                    | more_horiz
+                                                .dropdown-menu(aria-labelledby='btnGroupDrop1')
+                                                    if i.status == 'NEW'
+                                                        a.dropdown-item(href='/action/complete/#{i._id}') Complete
+                                                        a.dropdown-item(href='/action/cancel/#{i._id}') Cancel
+                                                    else
+                                                        a.dropdown-item(href='/action/open/#{i._id}') Open
                         h1 Retrospectives
                         form(name='newRetro' method='post' action='/retro/create')
                             .form-group

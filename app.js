@@ -227,26 +227,9 @@ io.on('connection', socket => {
     }).populate('actionitems.retrospective')
   })
 
-  socket.on('cancelActionItem', (actionid) => {
-    Teams.findOneAndUpdate({ actionitems: { $elemMatch: { _id: actionid } } }, { $set: { 'actionitems.$.status': 'CANCELLED' } }, { new: true }, (err, result) => {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(result)
-      }
-      io.to(action.retroid).emit('cancelledActionItem', actionid)
-    })
-  })
-
-  socket.on('completeActionItem', (actionid) => {
-    Teams.findOneAndUpdate({ actionitems: { $elemMatch: { _id: actionid } } }, { $set: { 'actionitems.$.status': 'COMPLETED' } }, { new: true }, (err, result) => {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(result)
-      }
-      io.to(result._id).emit('completedActionItem', actionid)
-    })
+  socket.on('completeActionItem', (action) => {
+    console.log('Complete action item')
+    socket.to(action.retroid).emit('completedActionItem', action.actionid)
   })
 
 })
