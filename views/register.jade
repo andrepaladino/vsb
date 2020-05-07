@@ -1,44 +1,44 @@
 extends layout
 
 block content
-    div.area
+        .container
 
-        h1= pageTitle
+            .py-5
+                 h1 Register
+                 p.lead Create your free account now!
 
+            if(errors)
+                ul.list-group
+                    each err in errors
+                        li.list-group-item.text-danger= err
 
+            form(name='register' method='post' action='/register')
+                .form-group
+                    label First Name
+                    if data
+                        input.form-control(type='text' placeholder='Name' value=data.firstName  name='firstName')
+                    else
+                        input.form-control(type='text' placeholder='Name' name='firstName')
+                .form-group
+                    label Last Name
+                    if data
+                        input.form-control(type='text'  placeholder='Name' value=data.lastName name='lastName')
+                    else
+                        input.form-control(type='text'  placeholder='Name' name='lastName')
+                .form-group
+                    label User Name
+                    if data
+                        input.form-control(type='text'  placeholder='Name' value=data.username name='username')
+                    else
+                        input.form-control(type='text'  placeholder='Name' name='username')
+                .form-group
+                    label Email
+                    if data
+                        input.form-control(type='email' placeholder='Email' value=data.email name='email')
+                    else
+                        input.form-control(type='email' placeholder='Email' name='email')                
+                .form-group
+                    label Password
+                    input.form-control(type='password' placeholder='Password' name='password')
 
-        if(errors)
-            ul.list-group
-                each err in errors
-                    li.list-group-item.text-danger= err
-
-        form(name='register' method='post' action='/register')
-            .form-group
-                label First Name
-                if data
-                    input.form-control(type='text' placeholder='Name' value=data.firstName  name='firstName')
-                else
-                    input.form-control(type='text' placeholder='Name' name='firstName')
-            .form-group
-                label Last Name
-                if data
-                    input.form-control(type='text'  placeholder='Name' value=data.lastName name='lastName')
-                else
-                    input.form-control(type='text'  placeholder='Name' name='lastName')
-            .form-group
-                label User Name
-                if data
-                    input.form-control(type='text'  placeholder='Name' value=data.username name='username')
-                else
-                    input.form-control(type='text'  placeholder='Name' name='username')
-            .form-group
-                label Email
-                if data
-                    input.form-control(type='email' placeholder='Email' value=data.email name='email')
-                else
-                    input.form-control(type='email' placeholder='Email' name='email')                
-            .form-group
-                label Password
-                input.form-control(type='password' placeholder='Password' name='password')
-
-            input(class='btn btn-success' type='submit' value='Register Now')
+                input(class='btn btn-success' type='submit' value='Register Now')

@@ -2,22 +2,24 @@ extends layout
 
 block content
     div.area
-        .login
-            h1= pageTitle
-            if(errors)
-                ul.list-group
-                    each err in errors
-                        li.list-group-item.text-danger= err
+        .container
+            .login
+                .py-5
+                    h1= pageTitle
+                if(errors)
+                    ul.list-group
+                        each err in errors
+                            li.list-group-item.text-danger= err
 
-            form(name='register', method='post', action='/login')
-                .form-group
-                    label Email
-                    input.form-control(type='email' placeholder='Email', name='email')
-                .form-group
-                    label Password
-                    input.form-control(type='password', placeholder='Password', name='password')
-                
-                input(class='btn btn-success', type='submit', value='Login')
-                a.btn.btn-default(href='/register') Register
+                form.form-signin(name='register', method='post', action='/login')
+                    .form-group
+                        label Email
+                        input.form-control(type='email' placeholder='Email', name='email')
+                    .form-group
+                        label Password
+                        input.form-control(type='password', placeholder='Password', name='password')
+                    
+                    input(class='btn btn-primary', type='submit', value='Login')
+                    a.btn.btn-default(href='/register') Register
 
 
