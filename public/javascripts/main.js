@@ -64,7 +64,7 @@ $(document).ready(function () {
             $("#myTable tr").show()
         } else {
             $("#myTable tr").filter(function () {
-                $(this).toggle($(this).children(':eq(3)').text().indexOf(status) > -1)
+                $(this).toggle($(this).children(':eq(3)').find('input[name=actionStatus]').val().indexOf(status) > -1)
             });
         }
     })

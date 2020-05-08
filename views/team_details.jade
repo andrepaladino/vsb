@@ -77,7 +77,7 @@ block content
                                         th #{i.owner.username}
                                         th #{i.retrospective.name}
                                         th
-                                            input(type='hidden' name='actionStatus' value='#{i.status}')
+                                            input(type='hidden' name='actionStatus' value='#{i.status}') 
                                             if i.status == 'NEW'
                                                 span.material-icons(style='color: orange' title="Open") 
                                                  | flag
