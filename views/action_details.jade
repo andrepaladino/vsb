@@ -1,0 +1,36 @@
+extends layout
+
+block content
+
+    div.area
+        .container
+            .py-5
+                h1 Action Item
+            .row
+                .col
+                    if(errors)
+                        ul.list-group
+                            each err in errors
+                                li.list-group-item.text-danger= err
+                    form(name='update' method='post' action='/action/edit/#{action._id}')
+                        .form-group
+                            label Text
+                            input.form-control(type='text' value='#{action.text}' name='text')
+                        .form-group
+                            label Owner
+                            select.form-control(name='owner')
+                                option(value='#{action.owner._id}') #{action.owner.username}
+                                each m in members
+                                    if !action.owner._id.equals(m._id)
+                                        option(value='#{m._id}') #{m.username}
+                        .form-group
+                            label Status
+                            select.form-control(name='status')
+                                option(value='#{action.status}') #{action.status}
+                                option(value='OPEN') OPEN
+                                option(value='DONE') DONE
+                                option(value='CANCELLED') CANCELLED
+                        .form-group
+                            label Retro
+                            input.form-control(type='text' readonly='' value='#{action.retrospective.name}' name='retro')
+                        input(class='btn btn-success' type='submit' value='Save')

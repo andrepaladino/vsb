@@ -56,8 +56,8 @@ block content
                                 
                                 select.form-control#StatusOptions(name='selectedStatus')
                                     option(value='ALL') All
-                                    option(value='NEW') Open
-                                    option(value='COMPLETED') Done
+                                    option(value='OPEN') Open
+                                    option(value='DONE') Done
                                     option(value='CANCELLED') Cancelled
                             .col
                                 a.btn.btn-success#filterStatus(href='#') Filter
@@ -78,10 +78,10 @@ block content
                                         th #{i.retrospective.name}
                                         th
                                             input(type='hidden' name='actionStatus' value='#{i.status}') 
-                                            if i.status == 'NEW'
+                                            if i.status == 'OPEN'
                                                 span.material-icons(style='color: orange' title="Open") 
                                                  | flag
-                                            if i.status == 'COMPLETED'
+                                            if i.status == 'DONE'
                                                 span.material-icons(style='color: green' title="Done") 
                                                  | done 
                                             if i.status == 'CANCELLED'
@@ -92,11 +92,12 @@ block content
                                                 button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                                                     | more_horiz
                                                 .dropdown-menu(aria-labelledby='btnGroupDrop1')
-                                                    if i.status == 'NEW'
+                                                    if i.status == 'OPEN'
                                                         a.dropdown-item(href='/action/complete/#{i._id}') Complete
                                                         a.dropdown-item(href='/action/cancel/#{i._id}') Cancel
+                                                        a.a.dropdown-item(href='/action/details/#{i._id}') Update
                                                     else
-                                                        a.dropdown-item(href='/action/open/#{i._id}') Open
+                                                        a.dropdown-item(href='/action/open/#{i._id}') Reopen
                         h1 Retrospectives
                         form(name='newRetro' method='post' action='/retro/create')
                             .form-group

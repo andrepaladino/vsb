@@ -41,16 +41,16 @@ block content
                                 th(scope='col') 
                         tbody
                             each i in team.actionitems
-                                if(i.status == "NEW")
+                                if(i.status == "OPEN")
                                     tr
                                         th #{i.text}
                                         th #{i.owner.username}
                                         th #{i.retrospective.name}
                                         th
-                                            if i.status == 'NEW'
+                                            if i.status == 'OPEN'
                                                 span.material-icons(style='color: orange' title="Open") 
                                                  | flag
-                                            if i.status == 'COMPLETED'
+                                            if i.status == 'DONE'
                                                 span.material-icons(style='color: green' title="Done") 
                                                  | done 
                                             if i.status == 'CANCELLED'
@@ -61,7 +61,7 @@ block content
                                                 button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                                                     | more_horiz
                                                 .dropdown-menu(aria-labelledby='btnGroupDrop1')
-                                                    if i.status == 'NEW'
+                                                    if i.status == 'OPEN'
                                                         a.dropdown-item#completeAction(href='#' action-id = i._id) Complete
                                                         a.dropdown-item#cancelAction(href='#' action-id = i._id) Cancel
                                                     else
@@ -94,16 +94,16 @@ block content
                                 th(scole='col') 
                         tbody(id='actionitems')
                             each ai in team.actionitems
-                                if(ai.status == "NEW")
+                                if(ai.status == "OPEN")
                                     tr
                                         th #{ai.text}
                                         th #{ai.owner.username}
                                         th #{ai.retrospective.name}
                                         th 
-                                            if ai.status == 'NEW'
+                                            if ai.status == 'OPEN'
                                                 span.material-icons(style='color: orange' title="Open") 
                                                  | flag
-                                            if ai.status == 'COMPLETED'
+                                            if ai.status == 'DONE'
                                                 span.material-icons(style='color: green' title="Done") 
                                                  | done 
                                             if ai.status == 'CANCELLED'
@@ -114,7 +114,7 @@ block content
                                                 button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                                                     | more_horiz
                                                 .dropdown-menu(aria-labelledby='btnGroupDrop1')
-                                                    if ai.status == 'NEW'
+                                                    if ai.status == 'OPEN'
                                                         a.dropdown-item#completeAction(href='#' action-id = ai._id) Complete
                                                         a.dropdown-item#cancelAction(href='#' action-id = ai._id) Cancel
                                                     else

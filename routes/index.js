@@ -105,6 +105,12 @@ router.get('/action/cancel/:id/', authController.auth, actionController.cancel)
 //REOPEN ACTION ITEM
 router.get('/action/open/:id/', authController.auth, actionController.open)
 
+//GET ACTION ITEM DETAILS PAGE
+router.get('/action/details/:id/', authController.auth, actionController.details)
+
+//UPDATE ACTION ITEM
+router.post('/action/edit/:id/', authController.auth, actionController.edit)
+
 //CREATE TEAM RETROSPECTIVE
 router.post('/retro/create', authController.auth, retroController.save)
 

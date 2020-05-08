@@ -29,18 +29,21 @@ const TeamSchema = new mongoose.Schema({
 
     actionitems: [{
         text:{
-            type: String
+            type: String,
+            required: [true, 'Please provide a text']
         },
 
         owner:{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
+            required: [true, 'Please select a owner']
         },
 
         status:{
             type: String,
-            enum: ['NEW','COMPLETED','CANCELLED'],
-            default: 'NEW'
+            enum: ['OPEN','DONE','CANCELLED'],
+            default: 'NEW',
+            required: [true, 'Please select status']
         },
 
         retrospective: {
