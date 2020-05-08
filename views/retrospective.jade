@@ -46,7 +46,16 @@ block content
                                         th #{i.text}
                                         th #{i.owner.username}
                                         th #{i.retrospective.name}
-                                        th #{i.status}
+                                        th
+                                            if i.status == 'NEW'
+                                                span.material-icons(style='color: orange' title="Open") 
+                                                 | flag
+                                            if i.status == 'COMPLETED'
+                                                span.material-icons(style='color: green' title="Done") 
+                                                 | done 
+                                            if i.status == 'CANCELLED'
+                                                span.material-icons(style='color: red' title="Cancelled") 
+                                                 | close 
                                         th    
                                             .btn-group(role='group')
                                                 button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
@@ -82,8 +91,7 @@ block content
                                 th(scope='col') Owner
                                 th(scole='col') Retro
                                 th(scole='col') Status
-                                th(scope='col') Complete
-                                th(scole='col') Cancel
+                                th(scole='col') 
                         tbody(id='actionitems')
                             each ai in team.actionitems
                                 if(ai.status == "NEW")
@@ -91,15 +99,26 @@ block content
                                         th #{ai.text}
                                         th #{ai.owner.username}
                                         th #{ai.retrospective.name}
-                                        th #{ai.status}
+                                        th 
+                                            if ai.status == 'NEW'
+                                                span.material-icons(style='color: orange' title="Open") 
+                                                 | flag
+                                            if ai.status == 'COMPLETED'
+                                                span.material-icons(style='color: green' title="Done") 
+                                                 | done 
+                                            if ai.status == 'CANCELLED'
+                                                span.material-icons(style='color: red' title="Cancelled") 
+                                                 | close 
                                         th    
-                                            a.btn.btn-info(href='#')
-                                                span.material-icons.complete-action(action-id = ai._id)
-                                                    |   done_outline
-                                        th    
-                                            a.btn.btn-danger.cancel-action(href='#')
-                                                span.material-icons(action-id = ai._id)
-                                                    |   clear
+                                            .btn-group(role='group')
+                                                button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                                    | more_horiz
+                                                .dropdown-menu(aria-labelledby='btnGroupDrop1')
+                                                    if ai.status == 'NEW'
+                                                        a.dropdown-item#completeAction(href='#' action-id = ai._id) Complete
+                                                        a.dropdown-item#cancelAction(href='#' action-id = ai._id) Cancel
+                                                    else
+                                                        a.dropdown-item#openAction(href='#' action-id = ai._id) Open
             .col-md-2
                 div#participants
                     h2 Participants

@@ -56,8 +56,8 @@ block content
                                 
                                 select.form-control#StatusOptions(name='selectedStatus')
                                     option(value='ALL') All
-                                    option(value='NEW') New
-                                    option(value='COMPLETED') Completed
+                                    option(value='NEW') Open
+                                    option(value='COMPLETED') Done
                                     option(value='CANCELLED') Cancelled
                             .col
                                 a.btn.btn-success#filterStatus(href='#') Filter
@@ -76,7 +76,17 @@ block content
                                         th #{i.text}
                                         th #{i.owner.username}
                                         th #{i.retrospective.name}
-                                        th #{i.status}
+                                        th
+                                            input(type='hidden' name='actionStatus' value='#{i.status}')
+                                            if i.status == 'NEW'
+                                                span.material-icons(style='color: orange' title="Open") 
+                                                 | flag
+                                            if i.status == 'COMPLETED'
+                                                span.material-icons(style='color: green' title="Done") 
+                                                 | done 
+                                            if i.status == 'CANCELLED'
+                                                span.material-icons(style='color: red' title="Cancelled") 
+                                                 | close 
                                         th
                                             .btn-group(role='group')
                                                 button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
@@ -117,12 +127,12 @@ block content
                                         th #{i.name}
                                         th.date-util() #{i.createdDate}
                                         th
-                                            if i.status == 'NEW' || i.status == 'INPROGRESS'
-                                                span.material-icons(style='color: red' title="Live") 
+                                            if i.status == 'NEW' || i.status == 'INPROGRESS' || i.status == 'REVIEW'
+                                                span.material-icons(style='color: red' title="In Progress") 
                                                  | settings_input_antenna
                                             else
-                                                span.material-icons(style='color: blue' title="Completed") 
-                                                 | outlined_flag                                              
+                                                span.material-icons(style='color: green' title="Completed") 
+                                                 | done                                              
                                         th
                                             if i.status === 'COMPLETED'
                                                 a(href='/retro/complete/#{i.id}')
@@ -139,6 +149,10 @@ block content
                             each m in team.members
                                 .user(id="#{m._id}")
                                     a.avatar.teammember(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
+                                    if team.leader._id.equals(m._id)
+                                        .leader
+                                            span.material-icons.leader-icon(style='align: center' title='Leader')
+                                                | brightness_low
                                     .infosPlayer
                                         span.nick=m.username
                                         a.remove-member(href='#')

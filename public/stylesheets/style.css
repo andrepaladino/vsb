@@ -169,6 +169,26 @@ a {
   transition-timing-function: linear;
 }
 
+.leader{ 
+  content: '';
+  width: 30px;
+  height: 30px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  border: 2px #fff solid;
+  position: absolute;
+  top: 10px;
+  left: 55px;
+  background-color: #ffc926;
+}
+
+.leader-icon{
+  text-align: center;
+}
+
 .infosPlayer {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
