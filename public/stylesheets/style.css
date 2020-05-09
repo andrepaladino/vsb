@@ -254,6 +254,17 @@ a {
   transition: box-shadow 200ms linear;
 }
 
+.dropdown-content{
+  display: none;
+  position: absolute;
+  float: left;
+  background-color: #fff
+}
+
+.dropdown:hover .dropdown-content {
+  display: inline-block;
+}
+
 .teammember{
   box-shadow: 0 0 0 4px #0a1cbf;
 }

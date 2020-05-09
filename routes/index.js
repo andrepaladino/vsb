@@ -93,6 +93,9 @@ router.post('/teams/remove/member/:id', authController.auth, teamController.remo
 //DELETE TEAM
 router.delete('/teams/delete/:id/', authController.auth, teamController.delete)
 
+//CHANGE TEAM LEADER
+router.get('/teams/leader/:teamid/:userid', authController.auth, teamController.changeLeader)
+
 //CREATE ACTION ITEM
 // router.post('/action/create', authController.auth, actionController.save)
 

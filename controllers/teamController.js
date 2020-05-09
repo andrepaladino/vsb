@@ -15,7 +15,7 @@ module.exports.list = (req, res) => {
 
 //LOAD CREATE PAGE
 module.exports.create = (req, res) => {
-    return res.render('team_create', { pageTitle: 'Create Team', errors: req.flash('registrationErrors')})
+    return res.render('team_create', { pageTitle: 'Create Team', errors: req.flash('registrationErrors') })
 }
 
 //CREATE NEW TEAM
@@ -30,20 +30,20 @@ module.exports.save = (req, res) => {
         name: req.body.name.trim(),
         description: req.body.description.trim(),
         image: '/images/' + saveFileName,
-        leader: req.session.user._id,
+        leader: [req.session.user._id],
         members: [req.session.user._id],
         createdBy: req.session.user._id,
         createdDate: Date.now(),
         updatedBy: req.session.user._id,
         updatedDate: Date.now()
     }, (err, result) => {
-        if (err){
+        if (err) {
             req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
             console.log(err)
             res.redirect('/teams/create')
 
         }
-        else{
+        else {
             res.redirect('/teams')
         }
     })
@@ -57,7 +57,7 @@ module.exports.details = (req, res) => {
             console.log(err)
         else
             res.render('team_details', { team: team, templates: RetroTemplates.loadTemplates, errors: req.flash('registrationErrors') })
-    }).populate('leader').populate('members').populate('createdBy').populate('updatedBy').populate('retrospectives').populate('actionitems.owner').populate('actionitems.retrospective')
+    }).populate('members').populate('createdBy').populate('updatedBy').populate('retrospectives').populate('actionitems.owner').populate('actionitems.retrospective')
 }
 
 //UPDATE TEAM
@@ -82,12 +82,12 @@ module.exports.update = (req, res) => {
             updatedBy: req.session.user._id,
             updatedDate: Date.now()
         }, { runValidators: true }, (err, result) => {
-            if (err){
+            if (err) {
                 req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
                 console.log(err)
                 res.redirect('/teams/details/' + team._id)
             }
-            else{
+            else {
                 res.redirect('/teams/details/' + team._id)
             }
         })
@@ -109,7 +109,7 @@ module.exports.addMember = (req, res) => {
                     return res.redirect('/teams/details/' + req.params.id)
                 } else {
                     team.updateOne({ $push: { members: user } }, { runValidators: true }, (err, result) => {
-                        if (err){
+                        if (err) {
                             req.flash('registrationErrors', 'An error occurred. Please, try again')
                             console.log(err)
                         }
@@ -122,6 +122,7 @@ module.exports.addMember = (req, res) => {
     })
 }
 
+//REMOVE TEAM MEMBER
 module.exports.removeMember = (req, res) => {
 
     console.log(req.body.memberId)
@@ -141,6 +142,38 @@ module.exports.removeMember = (req, res) => {
                         return res.redirect('/teams/details/' + req.params.id)
                 })
             })
+        }
+    })
+}
+
+//ADD OR REMOVE TEAM LEADER
+module.exports.changeLeader = (req, res) => {
+
+    Teams.findById(req.params.teamid, (err, team) => {
+        if(err){
+            console.log(err)
+            return res.redirect('/teams/details/' + team._id)
+        }
+
+        if(team.leader.filter(l => l._id == req.session.user._id).length > 0){ //CHECK IF REQUEST USER IS A LEADER
+            console.log('This is a leader')
+            if(!team.leader.includes(req.params.userid)){ //IF NEW LEADER IS NOT LEADER
+                team.updateOne({ $push: { leader: req.params.userid } }, (err, result) => { //ADD LEADER
+                    if(err)
+                        console.log(err)
+                    return res.redirect('/teams/details/' + team._id)
+                })
+            }else if(team.leader.length > 1){ //IF USER IS ALREADY A LEADER, BUT TEAM HAS TO HAVE AT LEAST ONE LEADER
+                team.updateOne({ $pull: { leader: req.params.userid } }, (err, result) => { //REMOVE USER LEADERSHIP
+                    if(err)
+                        console.log(err)
+                    return res.redirect('/teams/details/' + team._id)
+                })
+            }
+        }else{
+            console.log('Not a leader')
+            return res.redirect('/teams/details/' + team._id)
+
         }
     })
 }

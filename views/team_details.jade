@@ -17,9 +17,6 @@ block content
                             label Description
                             textarea.form-control(maxlength='125' name='description') #{team.description}
                         .form-group
-                            label Team Leader
-                            input.form-control(type='text' readonly='' value='#{team.leader.username}')
-                        .form-group
                             label Created By
                             input.form-control(type='text' readonly='' value='#{team.createdBy.username}')
                         .form-group
@@ -149,8 +146,16 @@ block content
                         div
                             each m in team.members
                                 .user(id="#{m._id}")
-                                    a.avatar.teammember(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
-                                    if team.leader._id.equals(m._id)
+                                    .dropdown
+                                        img.avatar.teammember(src='#{m.image}')
+                                        if team.leader.filter(l => l._id == user._id).length > 0
+                                            .dropdown-content
+                                                    a.dropdown-item(href=href='/user/details/#{m._id}') Profile
+                                                    a.dropdown-item(href='/teams/leader/' + team._id + '/' + m._id) Toggle Leader
+                                        else
+                                            .dropdown-content
+                                                    a.dropdown-item(href=href='/user/details/#{m._id}') Profile                  
+                                    if team.leader.includes(m._id)
                                         .leader
                                             span.material-icons.leader-icon(style='align: center' title='Leader')
                                                 | brightness_low
