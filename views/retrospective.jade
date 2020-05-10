@@ -9,7 +9,7 @@ block content
             input(type='hidden' name='retroTemplateNumber' value='#{retro.retroTemplate.number}')
         .input-group.mb-3
 
-        if team.leader == user._id
+        if retro.facilitator == user._id
             if retro.status != 'NEW'
                 a.btn.btn-success.previousstep(href='#' ) Previous
             if retro.status != 'REVIEW'
@@ -125,7 +125,23 @@ block content
                     div
                         each m in team.members
                             .user(id="#{m._id}")
-                                a.avatar(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
+                                .dropdown
+                                    img.avatar(src='#{m.image}')
+                                    if retro.facilitator.equals(user._id) && !retro.facilitator.equals(m._id)
+                                        .dropdown-content
+                                                a.dropdown-item(href=href='/user/details/#{m._id}') Profile
+                                                a.dropdown-item.changeFacilitator(href=href='#' user-id='#{m._id}') Make Facilitator
+                                    if !retro.facilitator.equals(user._id)
+                                        .dropdown-content
+                                                a.dropdown-item(href=href='/user/details/#{m._id}') Profile
+                                    if retro.facilitator.equals(user._id) && retro.facilitator.equals(m._id)
+                                        .dropdown-content
+                                                a.dropdown-item(href=href='/user/details/#{m._id}') Profile
+                                if retro.facilitator.equals(m._id)
+                                    .leader
+                                        span.material-icons.leader-icon(style='align: center' title='Facilitator')
+                                            | brightness_low
+                                //a.avatar(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
                                 .infosPlayer
                                     span.nick=m.username
                                     span.inputQnt 0

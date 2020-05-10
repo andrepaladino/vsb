@@ -6,6 +6,12 @@ const RetroSchema = new mongoose.Schema({
         required: [true, 'Retrospective title is mandatory']
     },
 
+    facilitator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required : true
+    },
+
     participants: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

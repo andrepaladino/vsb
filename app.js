@@ -232,6 +232,10 @@ io.on('connection', socket => {
     socket.to(action.retroid).emit('completedActionItem', action.actionid)
   })
 
+  socket.on('changeFacilitator', retroid =>{
+    socket.to(retroid).emit('facilitatorChanged', retroid)
+  })
+
 })
 
 // view engine setup

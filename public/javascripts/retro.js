@@ -25,26 +25,26 @@ $(function () {
 });
 
 socket.on('onlineUser', function (userid) {
-    var element = $('#' + userid).children(":first")
+    var element = $('#' + userid).find('img')
 
     if (element.hasClass('offline')) {
         element.removeClass('offline')
     }
 
     if (!element.hasClass('online')) {
-        $('#' + userid).children(":first").addClass("online")
+        element.addClass("online")
     }
 })
 
 socket.on('offlineUser', function (userid) {
-    var element = $('#' + userid).children(":first")
+    var element = $('#' + userid).find('img')
 
     if (element.hasClass('online')) {
         element.removeClass('online')
     }
 
     if (!element.hasClass('offline')) {
-        $('#' + userid).children(":first").addClass("offline")
+        element.addClass("offline")
     }
 })
 
@@ -175,6 +175,10 @@ socket.on('createActionItem', function (data) {
 })
 
 socket.on('completedActionItem', function (data) {
+    location.reload()
+})
+
+socket.on('facilitatorChanged', function (data) {
     location.reload()
 })
 
@@ -312,6 +316,32 @@ $(document).ready(function () {
             url: '/action/complete/' + actionid,
             success: function (response) {
                 socket.emit('completeActionItem', action)
+                location.reload()
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+
+    });
+});
+
+$(document).ready(function () {
+    $('.changeFacilitator').on('click', function (e) {
+        $target = $(e.target);
+
+        const userid = $target.attr('user-id');
+        var retroid = $('input[name=retroID]').val();
+
+        console.log('Change facilitator: ')
+        console.log('new facilitator: ' + userid)
+        console.log('retro: ' + retroid)
+
+        $.ajax({
+            type: 'GET',
+            url: '/retro/changefacilitator/'+ retroid + '/' + userid,
+            success: function (response) {
+                socket.emit('changeFacilitator', retroid)
                 location.reload()
             },
             error: function (err) {

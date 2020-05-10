@@ -132,6 +132,9 @@ router.post('/retro/live/complete/:id', authController.auth, retroController.com
 //RETRO COMPLETED MEETING
 router.get('/retro/complete/:id', authController.auth, retroController.completedRetro)
 
+//CHANGE RETRO FACILITATOR
+router.get('/retro/changefacilitator/:retroid/:userid', authController.auth, retroController.changeFacilitator)
+
 
 
 module.exports = router;

@@ -30,6 +30,7 @@ module.exports.save = (req, res) => {
                     team: req.body.teamID,
                     name: req.body.retrospective.trim(),
                     retroTemplate: template,
+                    facilitator: [req.session.user._id],
                     createdDate: Date.now()
         
                 }, (err, newRetro) => {
@@ -170,5 +171,23 @@ module.exports.completedRetro = (req, res) => {
             res.render('retrospective_completed', { retro: retro})
 
         })
+    })
+}
+
+module.exports.changeFacilitator = (req,res) => {
+    Retros.findById(req.params.retroid, (err, retro) => {
+        console.log('facilitator: ' + retro.facilitator)
+        if(retro.facilitator.equals(req.session.user._id)){
+            console.log('This is a leader')
+            retro.update({facilitator : req.params.userid}, (err, result) =>{
+                if(err){
+                    console.log(err)
+                }else{
+                    res.send(result)
+                }
+            })
+        }else{
+            console.log('This is not a leader')
+        }
     })
 }
