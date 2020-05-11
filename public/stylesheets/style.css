@@ -265,6 +265,40 @@ a {
   display: inline-block;
 }
 
+.team-list-img{
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+}
+
+.team-list-title{
+  position: absolute;
+  font-weight: bold;
+  fill: azure;
+  width: 100%;
+  top: 30%;
+  left: 50%;
+  text-align: center;
+  font-size: 25px;
+  background: rgba(255,255,255,0.5);
+  /* border-radius: 5px; */
+  transform: translate(-50%, -50%);
+}
+
+
+.team-list-description{
+  flex: 1 1 auto;
+  min-height: 1px;
+  height: 159px;
+  padding: 1.25rem;
+  overflow: hidden; 
+  text-overflow: ellipsis
+}
+
+.team-list-description-text{
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
 .teammember{
   box-shadow: 0 0 0 4px #0a1cbf;
 }

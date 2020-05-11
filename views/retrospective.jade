@@ -7,13 +7,17 @@ block content
             input(type='hidden' name='user' value='#{user._id}')
             input(type='hidden' name='retroID' value='#{retro._id}')
             input(type='hidden' name='retroTemplateNumber' value='#{retro.retroTemplate.number}')
-        .input-group.mb-3
+        //- .input-group.mb-3
 
         if retro.facilitator == user._id
             if retro.status != 'NEW'
-                a.btn.btn-success.previousstep(href='#' ) Previous
+                a.previousstep(href='#' )
+                    span.material-icons(style='color: grey' title="Previous") 
+                        | arrow_back_ios
             if retro.status != 'REVIEW'
-                a.btn.btn-success.nextstep(href='#' ) Next
+                a.nextstep(href='#' )
+                    span.material-icons(style='color: grey' title="Next") 
+                        | arrow_forward_ios
             else
                 a.btn.btn-success.completeRetro(href='#') Complete
     
@@ -82,7 +86,7 @@ block content
                                             option(value='#{m._id}')=m.username
                                 .col-md-3
                                     </br>
-                                    input(class='btn btn-success' type='submit' value='Add')
+                                    input(class='btn btn-primary' type='submit' value='Add')
                         </br>
                     table.table
                         thead
