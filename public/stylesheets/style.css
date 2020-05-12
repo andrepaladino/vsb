@@ -49,7 +49,7 @@ a {
   /* justify-content: center; */
   /* align-items: center; */
   /* flex-direction: column; */
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .chronometer{
@@ -309,5 +309,11 @@ a {
 
 .offline{
   box-shadow: 0 0 0 4px #f5c91b;
+}
+
+.timer{
+  margin-bottom: 0px;
+  font-size: 25px;
+  display: inline-block;
 }
 

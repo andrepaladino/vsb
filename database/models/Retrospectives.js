@@ -56,6 +56,16 @@ const RetroSchema = new mongoose.Schema({
 
     }],
 
+    seconds:{
+        type: Number,
+        default: 900
+    },
+
+    count:{
+        type: Number,
+        default: 0
+    },
+
     createdDate: Date,
 
 })

@@ -6,22 +6,36 @@ block content
         h1 Retrospective | #{retro.name}
             input(type='hidden' name='user' value='#{user._id}')
             input(type='hidden' name='retroID' value='#{retro._id}')
+            input(type='hidden' name='retroFacilitator' value='#{retro.facilitator}')
             input(type='hidden' name='retroTemplateNumber' value='#{retro.retroTemplate.number}')
-        //- .input-group.mb-3
-
-        if retro.facilitator == user._id
-            if retro.status != 'NEW'
-                a.previousstep(href='#' )
-                    span.material-icons(style='color: grey' title="Previous") 
-                        | arrow_back_ios
-            if retro.status != 'REVIEW'
-                a.nextstep(href='#' )
-                    span.material-icons(style='color: grey' title="Next") 
-                        | arrow_forward_ios
-            else
-                a.btn.btn-success.completeRetro(href='#') Complete
+        .row
+            .col-md-10
+                if retro.facilitator == user._id
+                    if retro.status != 'NEW'
+                        a.previousstep(href='#' )
+                            span.material-icons(style='color: grey' title="Previous") 
+                                | arrow_back_ios
+                    if retro.status != 'REVIEW'
+                        a.nextstep(href='#' )
+                            span.material-icons(style='color: grey' title="Next") 
+                                | arrow_forward_ios
+                    else
+                        a.btn.btn-success.completeRetro(href='#') Complete
+            .col-md-2
+                .div.timer
+                    span.material-icons.md-48#clock(style='margin-top:2px;') 
+                        | alarm
+                
+                    p.timer#timerMin(contenteditable='true') 15
+                    p.timer :
+                    p.timer#timerSec(contenteditable='true') 00
+                    if retro.facilitator == user._id
+                        a.startCountDown(href='#')
+                            span.material-icons.md-48#clock( title="Open") 
+                                | play_circle_outline
     
         if retro.status == 'INPROGRESS'
+            h4(style='font-style: italic;') Share your thoughts!
             form.form-inline#chat
                 .form-group.mb-2
                     select#inputCategory.form-control
@@ -31,6 +45,8 @@ block content
                     label.sr-only(for='inputPassword2') Password
                     input#inputPassword2.form-control(type='text' name='message')
                 button.btn.btn-primary.mb-2(type='submit') Add
+
+
         .row
             .col-md-10
                 if(retro.status == 'NEW')
@@ -155,4 +171,5 @@ block content
     script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js')
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    //- script(type='text/javascript' src='/javascripts/stopwatch.js')
     script(type='text/javascript' src='/javascripts/retro.js')

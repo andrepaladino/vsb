@@ -55,6 +55,8 @@ server.listen(PORT, () => {
   console.log(`Our app is running on port ${PORT}`);
 });
 
+var timers = []
+
 io.on('connection', socket => {
   socket.removeAllListeners()
   console.log('Socket conectado: ' + socket.id)
@@ -232,8 +234,67 @@ io.on('connection', socket => {
     socket.to(action.retroid).emit('completedActionItem', action.actionid)
   })
 
-  socket.on('changeFacilitator', retroid =>{
+  socket.on('changeFacilitator', retroid => {
     socket.to(retroid).emit('facilitatorChanged', retroid)
+  })
+
+  socket.on('StopCountDown', (data) => {
+    var timer = timers.find(t => t.retroid == data)
+    if (timer) {
+      clearInterval(timer.interval)
+      timers.splice(timers.indexOf(timers.find(t => t.retroid == data.retroid)))
+    }
+  })
+
+  socket.on('StartCountDown', (data) => {
+    console.log('The timer has been set')
+    console.log(data.sec)
+    console.log(data.retroid)
+
+    var timer = timers.find(t => t.retroid == data.retroid)
+
+    if (timer) {
+      clearInterval(timer.interval)
+      timers.splice(timers.indexOf(timers.find(t => t.retroid == data.retroid)))
+    }
+
+    Retros.findByIdAndUpdate(data.retroid, { seconds: data.sec, count: 0 }, { new: true }, (err, retro) => {
+      io.to(retro._id).emit('UpdateTimer', convertSeconds(retro.seconds - retro.count)) //SEND TO ALL SOCKETS
+
+    })
+
+    var interval = setInterval(timeIt, 1000)
+
+    timer = { interval: interval, retroid: data.retroid }
+
+    timers.push(timer)
+
+    console.log(timers)
+
+    function timeIt() {
+
+      Retros.findById(data.retroid, (err, retro) => {
+        counter = retro.count + 1
+        Retros.findByIdAndUpdate(retro._id, { count: counter }, { new: true }, (err, result) => {
+          io.to(retro._id).emit('UpdateTimer', convertSeconds(result.seconds - result.count))           //SEND TO ALL SOCKETS
+          if (result.count == result.seconds) {
+            result.updateOne({ count: 0 }, (err, result) => { })
+            clearInterval(interval)
+            io.to(retro._id).emit('TimeisUp')
+          }
+        })
+      })
+    }
+
+    function convertSeconds(s) {
+      var min = Math.floor(s / 60)
+      var sec = Math.floor(s % 60)
+
+      return {
+        min: min.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }),
+        sec: sec.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+      }
+    }
   })
 
 })

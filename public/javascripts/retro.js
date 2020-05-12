@@ -1,6 +1,7 @@
 $(function () {
     var templateNumber = $('input[name=retroTemplateNumber]').val();
     $('#includedContent').load('/template_views/template_' + templateNumber + '.html');
+
 });
 
 var socket = io()
@@ -171,7 +172,7 @@ socket.on('goToNext', function (data) {
 socket.on('createActionItem', function (data) {
     console.log(data.actionitem)
     console.log(data.owner)
-    $('#actionitems').append('<tr><th>'+data.actionitem.text+'</th><th>'+data.owner.username+'</th><th>' +data.actionitem.retrospective.name+ '</th><th>'+data.actionitem.status+'</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>')
+    $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username + '</th><th>' + data.actionitem.retrospective.name + '</th><th>' + data.actionitem.status + '</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>')
 })
 
 socket.on('completedActionItem', function (data) {
@@ -180,6 +181,28 @@ socket.on('completedActionItem', function (data) {
 
 socket.on('facilitatorChanged', function (data) {
     location.reload()
+})
+
+socket.on('UpdateTimer', function (data) {
+    $('#timerMin').html(data.min)
+    $('#timerSec').html(data.sec)
+
+    if(data.min == '00' && data.sec == '00'){
+        document.getElementById("timerMin").style.color = 'red';
+        document.getElementById("timerSec").style.color = 'red';
+        document.getElementById("clock").style.color = 'red';
+    }
+
+
+})
+
+socket.on('TimeisUp', function (data) {
+    alert('Time is up')
+    document.getElementById("timerMin").style.color = 'black';
+    document.getElementById("timerSec").style.color = 'black';
+    document.getElementById("clock").style.color = 'black';
+    $('#timerMin').html('15')
+    $('#timerSec').html('00')
 })
 
 
@@ -193,6 +216,7 @@ $('.nextstep').on('click', function (e) {
         success: function (response) {
             location.reload()
             socket.emit('nextStep', retroid)
+            socket.emit('StopCountDown', retroid)
         },
         error: function (err) {
             console.log(err);
@@ -208,6 +232,7 @@ $('.previousstep').on('click', function (e) {
         success: function (response) {
             location.reload()
             socket.emit('nextStep', retroid)
+            socket.emit('StopCountDown', retroid)
         },
         error: function (err) {
             console.log(err);
@@ -216,6 +241,7 @@ $('.previousstep').on('click', function (e) {
 })
 
 $('.completeRetro').on('click', function (e) {
+    socket.emit('StopCountDown', retroid)
     var r = confirm("Are you sure you want to finish this meeting?")
     var retroid = $('input[name=retroID]').val();
 
@@ -284,7 +310,7 @@ $(document).ready(function () {
         var retroid = $('input[name=retroID]').val();
         console.log('Complete Action Item: ' + actionid)
 
-        var action = {actionid:actionid, retroid:retroid }
+        var action = { actionid: actionid, retroid: retroid }
 
         $.ajax({
             type: 'GET',
@@ -309,7 +335,7 @@ $(document).ready(function () {
 
         console.log('Complete Action Item: ' + actionid)
 
-        var action = {actionid:actionid, retroid:retroid }
+        var action = { actionid: actionid, retroid: retroid }
 
         $.ajax({
             type: 'GET',
@@ -339,7 +365,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'GET',
-            url: '/retro/changefacilitator/'+ retroid + '/' + userid,
+            url: '/retro/changefacilitator/' + retroid + '/' + userid,
             success: function (response) {
                 socket.emit('changeFacilitator', retroid)
                 location.reload()
@@ -351,6 +377,39 @@ $(document).ready(function () {
 
     });
 });
+
+
+$(document).ready(function () {
+    $('.startCountDown').on('click', function (e) {
+
+        console.log('Count Down')
+        var minutes = parseInt(($('#timerMin').html())) * 60
+        var sec = minutes + parseInt($('#timerSec').html())
+
+        if (isNaN(sec) || sec <= 0) {
+            console.log('Not a Number')
+
+            $('#timerMin').html('15')
+            $('#timerSec').html('00')
+        } else {
+            var retroid = $('input[name=retroID]').val();
+
+            socket.emit('StartCountDown', { sec: sec, retroid: retroid })
+        }
+
+
+    });
+});
+
+$(document).ready(function () {
+    $('.stopCountDown').on('click', function (e) {
+        var retroid = $('input[name=retroID]').val();
+        socket.emit('StopCountDown', retroid)
+
+    });
+});
+
+
 
 
 
