@@ -52,6 +52,16 @@ module.exports.registerUser = (req, res) => {
     var firstNameModified = (req.body.firstName.charAt(0).toUpperCase() + req.body.firstName.slice(1)).trim();
     var lastNameModified = (req.body.lastName.charAt(0).toUpperCase() + req.body.lastName.slice(1)).trim();
 
+    if(req.body.password && req.body.confirmpassword){
+        if(req.body.password != req.body.confirmpassword){
+            console.log('Passwords dont match')
+            req.flash('error_messages', 'Passwords dont match')
+            req.flash('data', req.body)
+            return res.redirect('/register')
+
+        }
+    }
+
     Users.create({
         firstName: firstNameModified,
         lastName: lastNameModified,
@@ -75,7 +85,7 @@ module.exports.details = (req, res) => {
         if (err)
             console.log(err)
         else
-            res.render('user_details', { userDetails: user })
+            res.render('user_details', { userDetails: user, passErrors: req.flash('error_messages_password'), errors: req.flash('error_messages')})
     })
 }
 
@@ -100,22 +110,41 @@ module.exports.update = (req, res) => {
             lastName: req.body.lastName,
             image: currentImageName,
             username: req.body.username,
-        }, { new: true }, (err, user) => {
+        }, { new: true, runValidators: true }, (err, user) => {
 
-            if (err)
+            if (err){
+                req.flash('error_messages', Object.keys(err.errors).map(key => err.errors[key].message))
                 console.log(err)
-            else
-            req.session.user.firstName = user.firstName
-            req.session.user.lastName = user.lastName
-            req.session.user.username = user.username
-            console.log(req.session)
-            res.redirect('/user/details/' + user._id)
+                return res.redirect('/user/details/' + req.params.id)
+
+            }
+            else{
+                req.session.user.firstName = user.firstName
+                req.session.user.lastName = user.lastName
+                req.session.user.username = user.username
+                console.log(req.session)
+                return res.redirect('/user/details/' + user._id)
+            }
         })
 
 
 }
 
 module.exports.updatePassword = (req, res) => {
+
+    if(req.body.password.length > 0 && req.body.confirmpassword.length > 0){
+        if(req.body.password != req.body.confirmpassword){
+            console.log('Passwords dont match')
+            req.flash('error_messages_password', 'Passwords dont match')
+            return res.redirect('/user/details/' + req.params.id)
+        }
+    }
+
+    if(req.body.password.length <= 0 || req.body.password.length <= 0 ){
+        req.flash('error_messages_password', 'Please provide a password')
+        return res.redirect('/user/details/' + req.params.id)
+    }
+
     Users.findById(req.params.id, (err, user) => {
         user.password = req.body.password
 

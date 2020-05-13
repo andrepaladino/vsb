@@ -6,11 +6,19 @@ block content
         .container
             .py-5
                 h1 User
+            
+
+            
             if user._id == userDetails._id 
                 .row
                     .col-md-4
                         img(src='#{userDetails.image}' alt='image' style='width:300px;height:200px;' class="rounded")
-                    .col-md-6
+                    .col-md-4
+                        if(errors)
+                            ul.list-group
+                                each err in errors
+                                    li.list-group-item.text-danger= err
+                            //- </br>
                         h1 User Details
                         form(name='update' method='post' action='/user/edit/#{userDetails.id}' encType = 'multipart/form-data')
                             .form-group
@@ -30,11 +38,19 @@ block content
                             .form-group 
                                 input(type='hidden' name='currentImage' value='#{userDetails.image}')
                             input(class='btn btn-success' type='submit' value='Save')
+                    .col-md-4
+                        if(passErrors)
+                            ul.list-group
+                                each err in passErrors
+                                    li.list-group-item.text-danger= err
                         h1 Update Password
                         form(name='update' method='post' action='/user/password/#{userDetails.id}')
                             .form-group
                                 label Password
-                                input.form-control(type='password' placeholder='New Password' name='password')
+                                input.form-control(type='password' placeholder='New Password' name='password')                        
+                            .form-group
+                                label Confirm Password
+                                input.form-control(type='password' placeholder='Confirm Password' name='confirmpassword')
                             input(class='btn btn-success' type='submit' value='Save')
                     
             else
