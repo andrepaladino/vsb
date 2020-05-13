@@ -8,8 +8,19 @@ const RetroTemplates = require('../templates/templates_list')
 //LOAD CREATE PAGE
 module.exports.create = (req, res) => {
 
-    console.log(RetroTemplates.loadTemplates)
-    return res.render('retrospective_create', { pageTitle: 'Create Retrospective', templates: RetroTemplates.loadTemplates, teamid : req.params.teamid })
+    Teams.findById(req.params.teamid, (err, team) => {
+        if(team.leader.filter(t => t._id == req.session.user._id).length> 0){
+
+            if(team.retrospectives.filter(r => r.status == 'NEW' || r.status == 'INPROGRESS' || r.status == 'REVIEW').length > 0){
+                req.flash('registrationErrors', 'There is already a meeting in progress.')
+                return res.redirect('/teams/details/' + team._id)
+            }
+            return res.render('retrospective_create', { pageTitle: 'Create Retrospective', templates: RetroTemplates.loadTemplates, teamid : req.params.teamid, errors: req.flash('registrationErrors')})
+        }else{
+            req.flash('registrationErrors', 'Only a team leader can start a cerimony.')
+            return res.redirect('/teams/details/' + team._id)
+        }
+    }).populate('retrospectives')
 }
 
 //CREATE NEW RETROSPECTIVE
@@ -35,7 +46,7 @@ module.exports.save = (req, res) => {
                     if (err) {
                         req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
                         console.log(err)
-                        return res.redirect('/teams/details/' + req.body.teamID)
+                        return res.redirect('/retro/create/' + req.body.teamID)
                     }
                     else {
                         Teams.findById((req.body.teamID), (err, team) => {
@@ -51,12 +62,12 @@ module.exports.save = (req, res) => {
             } else {
                 errors.push('Select a retrospective template')
                 req.flash('registrationErrors', errors)
-                res.redirect('/teams/details/' + req.body.teamID)
+                res.redirect('/retro/create/' + req.body.teamID)
             }
         } else {
             errors.push('Only a team leader can start a retrospective')
             req.flash('registrationErrors', errors)
-            res.redirect('/teams/details/' + req.body.teamID)
+            res.redirect('/retro/create/' + req.body.teamID)
 
         }
     })

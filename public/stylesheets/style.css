@@ -82,12 +82,12 @@ a {
 
 .message{
   width: 200px;
-  height: 100px;
+  height: 115px;
   position: absolute;
   background: #FFF;
   border-radius: 5px;
   margin-bottom: 10px;
-  padding: 15px;
+  padding: 2px 15px 15px 15px;
   box-shadow: 0 1px 4px 0 rgba(192, 208, 230, 0.8);
   border-top: 20px solid rgba(230, 236, 245, 0.4);
   cursor: grab;
@@ -98,14 +98,14 @@ a {
   width: 30px;
   height: 30px;
   left: 5px;
-  top: 50px;
+  top: 65px;
   color: red;
 }
 
 .likesCount{
   position: absolute;
   right: 30px;
-  top: 50px;
+  top: 65px;
 }
 
 .like-input{
@@ -113,7 +113,7 @@ a {
   width: 20px;
   height: 20px;
   right: 5px;
-  top: 50px;
+  top: 65px;
 }
 
 .participants{

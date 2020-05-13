@@ -21,13 +21,13 @@ block content
                             input.form-control(type='text' readonly='' value='#{team.createdBy.username}')
                         .form-group
                             label Created Date
-                            input.form-control(type='text' readonly='' value='#{team.createdDate}')
+                            input.form-control(type='text' readonly='' value='#{team.createdDate.toLocaleDateString()} #{team.createdDate.toLocaleTimeString()}')
                         .form-group
                             label Updated By
                             input.form-control(type='text' readonly='' value='#{team.updatedBy.username}')
                         .form-group
                             label Updated Date
-                            input.form-control(type='text' readonly='' value='#{team.updatedDate.toLocaleTimeString()}')
+                            input.form-control(type='text' readonly='' value='#{team.updatedDate.toLocaleDateString()} #{team.updatedDate.toLocaleTimeString()}')
                         .form-group 
                             input(type='file' class='form-control-file' name='image')
                         .form-group 
@@ -68,6 +68,10 @@ block content
                                     th(scole='col') Status
                                     th(scope='col') 
                             tbody#myTable
+                                if team.actionitems.length < 1
+                                    tr
+                                        th
+                                            p No action items found.
                                 each i in team.actionitems
                                     tr
                                         th #{i.text}
@@ -96,7 +100,8 @@ block content
                                                     else
                                                         a.dropdown-item(href='/action/open/#{i._id}') Reopen
                         h1 Retrospectives
-                        a.btn.btn-success(href='/retro/create/' + team._id) New
+                        if team.leader.filter(l => l._id == user._id).length > 0                            
+                            a.btn.btn-success(href='/retro/create/' + team._id) New
                         table.table
                             thead
                                 tr
@@ -108,7 +113,7 @@ block content
                                 each i in team.retrospectives
                                     tr
                                         th #{i.name}
-                                        th.date-util() #{i.createdDate}
+                                        th.date-util() #{i.createdDate.toLocaleDateString()} #{i.createdDate.toLocaleTimeString()}
                                         th
                                             if i.status == 'NEW' || i.status == 'INPROGRESS' || i.status == 'REVIEW'
                                                 span.material-icons(style='color: red' title="In Progress") 

@@ -6,6 +6,11 @@ block content
             h1 Create Retrospective
             p.lead Choose a template and create a new cerimony.
 
+            if(errors)
+                ul.list-group
+                    each err in errors
+                        li.list-group-item.text-danger= err
+
         .row
 
             each t in templates.templates

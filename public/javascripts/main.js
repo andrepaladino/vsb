@@ -26,18 +26,22 @@ $(document).ready(function () {
         const memberId = $target.attr('member-id');
         console.log('member-id: ' + memberId)
 
-        $.ajax({
-            type: 'POST',
-            url: '/teams/remove/member/' + teamId,
-            data: { 'memberId': memberId },
-            success: function (response) {
-                alert('Member removed');
-                window.location.href = '/teams/details/' + teamId;
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
+        var r = confirm("Are you sure you want to remove this member?")
+
+        if(r == true){
+            $.ajax({
+                type: 'POST',
+                url: '/teams/remove/member/' + teamId,
+                data: { 'memberId': memberId },
+                success: function (response) {
+                    window.location.href = '/teams/details/' + teamId;
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
     });
 });
 

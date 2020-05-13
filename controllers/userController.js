@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 
 //LOAD INDEX PAGE
 module.exports.index = (req, res) => {
-    res.render('index', { title: 'Express' })
+    res.redirect('/teams')
 }
 
 //LOAD LOGIN PAGE

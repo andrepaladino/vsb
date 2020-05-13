@@ -89,20 +89,21 @@ block content
                 if(retro.status == 'INPROGRESS')
                     div#includedContent
                 if(retro.status == 'REVIEW')
-                    h3 Review
-                        form(id='actionitem')
-                            .row
-                                .col-md-3
-                                    label Action Item
-                                    input.form-control(type='text' placeholder='Action Item' name='actionitem')
-                                .col-md-3
-                                    label Owner
-                                    select.form-control(name='selectMember')
-                                        each m in team.members
-                                            option(value='#{m._id}')=m.username
-                                .col-md-3
-                                    </br>
-                                    input(class='btn btn-primary' type='submit' value='Add')
+                    h4(style='font-style: italic;') Make plans for the next iteration.
+                    </br>
+                    form(id='actionitem')
+                        .row
+                            .col-md-3
+                                label Action Item
+                                input.form-control(type='text' placeholder='Action Item' name='actionitem')
+                            .col-md-3
+                                label Owner
+                                select.form-control(name='selectMember')
+                                    each m in team.members
+                                        option(value='#{m._id}')=m.username
+                            .col-md-3
+                                </br>
+                                input(class='btn btn-primary' type='submit' value='Add')
                         </br>
                     table.table
                         thead

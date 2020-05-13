@@ -4,6 +4,10 @@ block content
 
     div.area
         h1 Retrospective | #{retro.name}
+        </br>
+        h4(style='font-style: italic;') This retrospective has been completed.
+
+        </br>
         .row
             .col-md-6
                 each category in retro.retroTemplate.categories

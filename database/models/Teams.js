@@ -42,7 +42,7 @@ const TeamSchema = new mongoose.Schema({
         status:{
             type: String,
             enum: ['OPEN','DONE','CANCELLED'],
-            default: 'NEW',
+            default: 'OPEN',
             required: [true, 'Please select status']
         },
 
