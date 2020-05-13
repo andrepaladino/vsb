@@ -172,7 +172,13 @@ socket.on('goToNext', function (data) {
 socket.on('createActionItem', function (data) {
     console.log(data.actionitem)
     console.log(data.owner)
-    $('#actionitems').append('<tr><th>' + data.actionitem.text + '</th><th>' + data.owner.username + '</th><th>' + data.actionitem.retrospective.name + '</th><th>' + data.actionitem.status + '</th><th><a href="" class="btn btn-info"><span action-id = ' + data.actionitem._id + ' class="material-icons">done_outline</span></a></th><th>   <a href="" class="btn btn-danger delete-action"><span action-id = ' + data.actionitem._id + ' class="material-icons">clear</span></a></th>')
+    
+    if(data.actionitem.status == 'OPEN'){
+        $('#actionitems').append('<tr><td>' + data.actionitem.text + '</td><td>' + data.owner.username + '</td><td>' + data.actionitem.retrospective.name + '</td><td> <span style="color: orange" title="Open" class="material-icons">flag</span></td><td><div role="group" class="btn-group"><button type="button" data-toggle="dropdown" aria-haspopup="true"aria-expanded="false" class="material-icons">more_horiz</button><div aria-labelledby="btnGroupDrop1" class="dropdown-menu"><a id="completeAction" href="#"action-id=" '+ data.actionitem._id+'" class="dropdown-item">Complete</a><a id="cancelAction" href="#"action-id="'+ data.actionitem._id + '" class="dropdown-item">Cancel</a></div></div></td></tr>')
+    }else{
+        location.reload()
+    }
+
 })
 
 socket.on('completedActionItem', function (data) {

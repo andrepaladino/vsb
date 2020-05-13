@@ -12,10 +12,16 @@ block content
                     form(name='update' method='post' action='/teams/edit/#{team.id}' encType = 'multipart/form-data')
                         .form-group
                             label Name
-                            input.form-control(type='text' value='#{team.name}' name='name')
+                            if team.leader.filter(l => l._id == user._id).length > 0
+                                input.form-control(type='text' value='#{team.name}' name='name')
+                            else
+                                input.form-control(type='text'  readonly='' value='#{team.name}' name='name')
                         .form-group
                             label Description
-                            textarea.form-control(maxlength='125' name='description') #{team.description}
+                            if team.leader.filter(l => l._id == user._id).length > 0
+                                textarea.form-control(maxlength='125' name='description') #{team.description}
+                            else
+                                textarea.form-control(maxlength='125' readonly='' name='description') #{team.description}
                         .form-group
                             label Created By
                             input.form-control(type='text' readonly='' value='#{team.createdBy.username}')
@@ -29,10 +35,12 @@ block content
                             label Updated Date
                             input.form-control(type='text' readonly='' value='#{team.updatedDate.toLocaleDateString()} #{team.updatedDate.toLocaleTimeString()}')
                         .form-group 
+                        if team.leader.filter(l => l._id == user._id).length > 0
                             input(type='file' class='form-control-file' name='image')
                         .form-group 
                             input(type='hidden' name='currentImage' value='#{team.image}')
-                        input(class='btn btn-success' type='submit' value='Save')
+                        if team.leader.filter(l => l._id == user._id).length > 0
+                            input(class='btn btn-success' type='submit' value='Save')
 
                 .col-md-6
                     if(errors)
@@ -59,7 +67,7 @@ block content
                             .col
                                 a.btn.btn-light#filterStatus(href='#') Filter
                         </br>
-                        table.table#actionItems
+                        table.table.table-striped#actionItems
                             thead
                                 tr
                                     th(scope='col') Action Item
@@ -74,10 +82,10 @@ block content
                                             p No action items found.
                                 each i in team.actionitems
                                     tr
-                                        th #{i.text}
-                                        th #{i.owner.username}
-                                        th #{i.retrospective.name}
-                                        th
+                                        td #{i.text}
+                                        td #{i.owner.username}
+                                        td #{i.retrospective.name}
+                                        td
                                             input(type='hidden' name='actionStatus' value='#{i.status}') 
                                             if i.status == 'OPEN'
                                                 span.material-icons(style='color: orange' title="Open") 
@@ -88,7 +96,7 @@ block content
                                             if i.status == 'CANCELLED'
                                                 span.material-icons(style='color: red' title="Cancelled") 
                                                  | close 
-                                        th
+                                        td
                                             .btn-group(role='group')
                                                 button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                                                     | more_horiz
@@ -113,15 +121,15 @@ block content
                                 each i in team.retrospectives
                                     tr
                                         th #{i.name}
-                                        th.date-util() #{i.createdDate.toLocaleDateString()} #{i.createdDate.toLocaleTimeString()}
-                                        th
+                                        td.date-util() #{i.createdDate.toLocaleDateString()} #{i.createdDate.toLocaleTimeString()}
+                                        td
                                             if i.status == 'NEW' || i.status == 'INPROGRESS' || i.status == 'REVIEW'
                                                 span.material-icons(style='color: red' title="In Progress") 
                                                  | settings_input_antenna
                                             else
                                                 span.material-icons(style='color: green' title="Completed") 
                                                  | done                                              
-                                        th
+                                        td
                                             if i.status === 'COMPLETED'
                                                 a(href='/retro/complete/#{i.id}')
                                                     span.material-icons
@@ -154,6 +162,8 @@ block content
                                         a.remove-member(href='#')
                                             span.material-icons(href='#' team-id = team._id member-id = m._id style="color:red")
                                                 | delete
+                    if team.leader.filter(l => l._id == user._id).length > 0                            
+                            
                         div
                             form(name='addmember' method='post' action='/teams/add/member/#{team.id}')
                                 .form-group

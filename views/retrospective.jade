@@ -20,10 +20,12 @@ block content
                             span.material-icons(style='color: grey' title="Next") 
                                 | arrow_forward_ios
                     else
-                        a.btn.btn-success.completeRetro(href='#') Complete
+                        a.completeRetro(href='#')
+                            span.material-icons.md-48(style='color: grey' title="Complete") 
+                                | outlined_flag                     
             .col-md-2
                 .div.timer
-                    span.material-icons.md-48#clock(style='margin-top:2px;') 
+                    span.material-icons#clock(style='margin-top:2px;') 
                         | alarm
                 
                     p.timer#timerMin(contenteditable='true') 15
@@ -51,7 +53,10 @@ block content
             .col-md-10
                 if(retro.status == 'NEW')
                     h1 Open Action Items
-                    table.table
+                    h4(style='font-style: italic;') Review what the team has accomplished.
+
+                    </br>
+                    table.table.table-striped
                         thead
                             tr
                                 th(scope='col') Action Item
@@ -63,10 +68,10 @@ block content
                             each i in team.actionitems
                                 if(i.status == "OPEN")
                                     tr
-                                        th #{i.text}
-                                        th #{i.owner.username}
-                                        th #{i.retrospective.name}
-                                        th
+                                        td #{i.text}
+                                        td #{i.owner.username}
+                                        td #{i.retrospective.name}
+                                        td
                                             if i.status == 'OPEN'
                                                 span.material-icons(style='color: orange' title="Open") 
                                                  | flag
@@ -76,7 +81,7 @@ block content
                                             if i.status == 'CANCELLED'
                                                 span.material-icons(style='color: red' title="Cancelled") 
                                                  | close 
-                                        th    
+                                        td    
                                             .btn-group(role='group')
                                                 button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                                                     | more_horiz
@@ -89,6 +94,7 @@ block content
                 if(retro.status == 'INPROGRESS')
                     div#includedContent
                 if(retro.status == 'REVIEW')
+                    </br>
                     h4(style='font-style: italic;') Make plans for the next iteration.
                     </br>
                     form(id='actionitem')
@@ -105,7 +111,7 @@ block content
                                 </br>
                                 input(class='btn btn-primary' type='submit' value='Add')
                         </br>
-                    table.table
+                    table.table.table-striped
                         thead
                             tr
                                 th(scope='col') Action Item
@@ -117,10 +123,10 @@ block content
                             each ai in team.actionitems
                                 if(ai.status == "OPEN")
                                     tr
-                                        th #{ai.text}
-                                        th #{ai.owner.username}
-                                        th #{ai.retrospective.name}
-                                        th 
+                                        td #{ai.text}
+                                        td #{ai.owner.username}
+                                        td #{ai.retrospective.name}
+                                        td 
                                             if ai.status == 'OPEN'
                                                 span.material-icons(style='color: orange' title="Open") 
                                                  | flag
@@ -130,7 +136,7 @@ block content
                                             if ai.status == 'CANCELLED'
                                                 span.material-icons(style='color: red' title="Cancelled") 
                                                  | close 
-                                        th    
+                                        td    
                                             .btn-group(role='group')
                                                 button.material-icons(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                                                     | more_horiz

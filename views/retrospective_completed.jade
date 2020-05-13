@@ -12,7 +12,7 @@ block content
             .col-md-6
                 each category in retro.retroTemplate.categories
                     h3=category.name
-                    table.table
+                    table.table.table-striped
                         thead
                             tr
                                 th(scope='col') Input
@@ -22,19 +22,19 @@ block content
                             each input in retro.inputs
                                 if(input.category == category.id)
                                     tr
-                                        th #{input.text}
-                                        th #{input.user.username}
-                                        th #{input.likes.length}
+                                        td #{input.text}
+                                        td #{input.user.username}
+                                        td #{input.likes.length}
             .col-md-3
                 h3 Action Items
-                table.table
+                table.table.table-striped
                         thead
                             tr
                                 th(scope='col') Action Item
                         tbody(id='actionitems')
                             each ai in retro.actionitems
                                     tr
-                                        th #{ai.text}
+                                        td #{ai.text}
             .col-md-3
                 div#participants
                     h2 Attendees

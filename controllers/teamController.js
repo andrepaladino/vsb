@@ -75,6 +75,13 @@ module.exports.update = (req, res) => {
     }
 
     Teams.findById((req.params.id), (err, team) => {
+
+        if(!(team.leader.filter(l => l._id == req.session.user._id).length > 0)){
+            console.log('UPDATE/this is not a leader')
+            req.flash('registrationErrors', 'Only a team leader can update team details.')
+            return res.redirect('/teams/details/' + team._id)
+        }
+
         team.updateOne({
             name: req.body.name,
             description: req.body.description,

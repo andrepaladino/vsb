@@ -150,7 +150,7 @@ module.exports.completeRetrospective = (req, res) => {
             else {
 
                 Teams.findOne({ 'retrospectives': retro._id }, (err, team) => {
-                    var openActionItems = team.actionitems.filter(a => a.status == 'NEW')
+                    var openActionItems = team.actionitems.filter(a => a.status == 'OPEN')
                     retro.updateOne({ actionitems: openActionItems }, (err, result) => {
                         if (err) {
                             console.log(err)
