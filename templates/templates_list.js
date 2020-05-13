@@ -2,7 +2,9 @@ module.exports.loadTemplates = {
     templates: [
         {
             number: 1,
-            name: 'Stop Start Continue Doing',
+            name: 'Start Doing',
+            description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+            image: '/images/team_default.png',
             categories: [
                 {
                     id: 'stopdoing',
@@ -21,7 +23,9 @@ module.exports.loadTemplates = {
 
         {
             number: 2,
-            name: 'Ballon',
+            name: 'Hot-air balloon',
+            description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+            image: '/images/team_default.png',
             categories: [
                 {
                     id: 'hotair',
@@ -32,6 +36,28 @@ module.exports.loadTemplates = {
                     name: 'Anchors'
                 }
             ]
+        },
+
+        {
+            number: 3,
+            name: 'Mad/sad/Glad',
+            description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+            image: '/images/team_default.png',
+            categories: [
+                {
+                    id: 'mad',
+                    name: 'Mad'
+                },
+                {
+                    id: 'sad',
+                    name: 'Sad'
+                },
+                {
+                    id: 'glad',
+                    name: 'Glad'
+                }
+            ]
         }
+        
     ]
 }

@@ -5,13 +5,11 @@ const Users = require('../database/models/Users')
 const RetroTemplates = require('../templates/templates_list')
 
 
-
-
 //LOAD CREATE PAGE
 module.exports.create = (req, res) => {
-    Retros.find({}, (err, retrosResult) => {
-        return res.render('retro_create', { pageTitle: 'Create Retrospective', retros: result })
-    })
+
+    console.log(RetroTemplates.loadTemplates)
+    return res.render('retrospective_create', { pageTitle: 'Create Retrospective', templates: RetroTemplates.loadTemplates, teamid : req.params.teamid })
 }
 
 //CREATE NEW RETROSPECTIVE
@@ -21,18 +19,18 @@ module.exports.save = (req, res) => {
     var errors = []
 
     Teams.findById(req.body.teamID, (err, t) => {
-        if(t.leader == req.body.user){
+        if (t.leader == req.body.user) {
             if (req.body.selectedTemplate != 0) {
                 var template = RetroTemplates.loadTemplates.templates.find(o => o.number == req.body.selectedTemplate);
-        
+
                 console.log(template)
                 Retros.create({
                     team: req.body.teamID,
-                    name: req.body.retrospective.trim(),
+                    name: req.body.name.trim(),
                     retroTemplate: template,
                     facilitator: [req.session.user._id],
                     createdDate: Date.now()
-        
+
                 }, (err, newRetro) => {
                     if (err) {
                         req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
@@ -45,7 +43,7 @@ module.exports.save = (req, res) => {
                                 if (err)
                                     console.log(err)
                                 else
-                                    res.redirect('/teams/details/' + team._id)
+                                    res.redirect('/retro/live/' + newRetro._id)
                             })
                         })
                     }
@@ -55,7 +53,7 @@ module.exports.save = (req, res) => {
                 req.flash('registrationErrors', errors)
                 res.redirect('/teams/details/' + req.body.teamID)
             }
-        }else{
+        } else {
             errors.push('Only a team leader can start a retrospective')
             req.flash('registrationErrors', errors)
             res.redirect('/teams/details/' + req.body.teamID)
@@ -146,7 +144,7 @@ module.exports.completeRetrospective = (req, res) => {
                         if (err) {
                             console.log(err)
                             res.redirect('/retro/complete/' + retro._id)
-                        }else{
+                        } else {
                             console.log(result)
                             res.redirect('/retro/complete/' + retro._id)
                         }
@@ -168,25 +166,25 @@ module.exports.completedRetro = (req, res) => {
             if (err)
                 console.log(err)
             //console.log(team.retrospectives.actionitems)
-            res.render('retrospective_completed', { retro: retro})
+            res.render('retrospective_completed', { retro: retro })
 
         })
     })
 }
 
-module.exports.changeFacilitator = (req,res) => {
+module.exports.changeFacilitator = (req, res) => {
     Retros.findById(req.params.retroid, (err, retro) => {
         console.log('facilitator: ' + retro.facilitator)
-        if(retro.facilitator.equals(req.session.user._id)){
+        if (retro.facilitator.equals(req.session.user._id)) {
             console.log('This is a leader')
-            retro.update({facilitator : req.params.userid}, (err, result) =>{
-                if(err){
+            retro.update({ facilitator: req.params.userid }, (err, result) => {
+                if (err) {
                     console.log(err)
-                }else{
+                } else {
                     res.send(result)
                 }
             })
-        }else{
+        } else {
             console.log('This is not a leader')
         }
     })

@@ -317,3 +317,31 @@ a {
   display: inline-block;
 }
 
+.option-card {
+  height: auto;
+  padding: 15px 15px 0;
+  margin: 0 10px 10px;
+  border: 2px #cfcfcf solid;
+  border-radius: 15px;
+  display: inline-block;
+}
+.option-card:first-of-type {
+  margin-left: 0;
+}
+.option-card:last-of-type {
+  margin-right: 0;
+}
+.option-card:hover,
+.option-card.choice {
+  border: 2px #0079c1 solid;
+  text-decoration: none;
+}
+a.option-card p:hover {
+  text-decoration: none;
+}
+.card-thumb {
+  width: 100%;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+

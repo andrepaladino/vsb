@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    .container
+        .py-5
+            h1 Create Retrospective
+            p.lead Choose a template and create a new cerimony.
+
+        .row
+
+            each t in templates.templates
+                .col-md-3(style='float:left')
+                    .card.mb-2.option-card
+                        input(type='hidden' name='number' value='#{t.number}')
+                        img.card-img-top(src='#{t.image}' alt='Card image cap')
+                        .card-body
+                            h4.card-title=t.name
+                            p.card-text=t.description
+        </br>
+        </br>
+        .row
+            .div#newRetro(style='margin-left:20px; display:none')
+                form(name='register' method='post' action='/retro/create')
+                        .form-group
+                            label Name
+                            input.form-control(type='text' placeholder='Name' name='name')
+                            input(type='hidden' name='user' value='#{user._id}')
+                            input(type='hidden' name='teamID' value='#{teamid}')
+                            input#selectedNumber(type='hidden' name='selectedTemplate')
+                            
+                    
+                        input(class='btn btn-success' type='submit' value='Create')

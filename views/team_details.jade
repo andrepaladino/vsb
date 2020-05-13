@@ -57,7 +57,7 @@ block content
                                     option(value='DONE') Done
                                     option(value='CANCELLED') Cancelled
                             .col
-                                a.btn.btn-success#filterStatus(href='#') Filter
+                                a.btn.btn-light#filterStatus(href='#') Filter
                         </br>
                         table.table#actionItems
                             thead
@@ -96,22 +96,7 @@ block content
                                                     else
                                                         a.dropdown-item(href='/action/open/#{i._id}') Reopen
                         h1 Retrospectives
-                        form(name='newRetro' method='post' action='/retro/create')
-                            .form-group
-                                h3 Create New
-                                .row
-                                    .col.5
-                                        select.form-control(name='selectedTemplate')
-                                            option(value='0') Select a template
-                                            each t in templates.templates
-                                                option(value='#{t.number}')=t.name
-                                    .col.5
-                                        input(type='hidden' name='teamID' value='#{team.id}')
-                                        input(type='hidden' name='user' value='#{user._id}')
-                                        input.form-control(type='text' placeholder='Title' name='retrospective')
-                                    .col.2
-                                        input(class='btn btn-success' type='submit' value='Create')
-                            </br>
+                        a.btn.btn-success(href='/retro/create/' + team._id) New
                         table.table
                             thead
                                 tr

@@ -70,5 +70,17 @@ $(document).ready(function () {
     })
 })
 
+$(document).ready(function () {
+    $('.option-card').click(function () {
+        $(".choice").removeClass("choice");
+        $(this).addClass("choice");
+        console.log($(this).find("input").val()); 
+
+        $('#selectedNumber').val($(this).find("input").val())
+        
+        document.getElementById("newRetro").style.display = "block";
+    });
+})
+
 
 

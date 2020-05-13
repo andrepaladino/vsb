@@ -114,8 +114,12 @@ router.get('/action/details/:id/', authController.auth, actionController.details
 //UPDATE ACTION ITEM
 router.post('/action/edit/:id/', authController.auth, actionController.edit)
 
+//CREATE RETRO GET
+router.get('/retro/create/:teamid', authController.auth, retroController.create)
+
+
 //CREATE TEAM RETROSPECTIVE
-router.post('/retro/create', authController.auth, retroController.save)
+router.post('/retro/create/', authController.auth, retroController.save)
 
 //LIVE RETRO
 router.get('/retro/live/:id', authController.auth, retroController.live)
