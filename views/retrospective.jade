@@ -11,10 +11,9 @@ block content
         .row
             .col-md-10
                 if retro.facilitator == user._id
-                    if retro.status != 'NEW'
-                        a.previousstep(href='#' )
-                            span.material-icons(style='color: grey' title="Previous") 
-                                | arrow_back_ios
+                    a.previousstep(href='#' )
+                        span.material-icons(style='color: grey' title="Previous") 
+                            | arrow_back_ios
                     if retro.status != 'REVIEW'
                         a.nextstep(href='#' )
                             span.material-icons(style='color: grey' title="Next") 
@@ -39,20 +38,19 @@ block content
         if retro.status == 'INPROGRESS'
             h4(style='font-style: italic;') Share your thoughts!
             form.form-inline#chat
-                .form-group.mb-2
+                .form-group.mb-3
                     select#inputCategory.form-control
                         each i in retro.retroTemplate.categories
-                            option(value='#{i.id}')=i.name
-                .form-group.mx-sm-3.mb-2
+                            option(value='#{i.id}' )=i.name
+                .form-group.mx-sm-3.mb-3
                     label.sr-only(for='inputPassword2') Password
-                    input#inputPassword2.form-control(type='text' name='message')
+                    input#inputPassword2.form-control(type='text' name='message' size="50" maxlength='45')
                 button.btn.btn-primary.mb-2(type='submit') Add
 
 
         .row
             .col-md-10
                 if(retro.status == 'NEW')
-                    h1 Open Action Items
                     h4(style='font-style: italic;') Review what the team has accomplished.
 
                     </br>

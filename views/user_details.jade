@@ -29,7 +29,7 @@ block content
                                 input.form-control(type='text' value='#{userDetails.lastName}' name='lastName')
                             .form-group
                                 label Username
-                                input.form-control(type='text' value='#{userDetails.username}' name='username')
+                                input.form-control(type='text' pattern="[a-z]{1,15}"  value='#{userDetails.username}' name='username')
                             .form-group
                                 label Email
                                 input.form-control(type='text' readonly='' value='#{userDetails.email}' name='email')

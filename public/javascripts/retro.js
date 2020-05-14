@@ -88,7 +88,7 @@ function removeInput(inputid) {
 function renderMessage(messageObject) {
     var appendTo = '.messages.' + messageObject.category.toLowerCase()
     $(appendTo.toString()).append(
-        '<div id="' + messageObject._id + '" class="message"><strong>' + messageObject.user.username + '</strong>: ' + messageObject.text + '</br><a class="remove-input" href="#"><span class="material-icons">delete forever</span></a> <a class="like-input" href="#"><span class="material-icons">thumb_up_alt</span></a><span class="likesCount">' + messageObject.likes.length + '</span> <input type="hidden" name="MessageID" value="' + messageObject._id + '"></input> </div>'
+        '<div id="' + messageObject._id + '" class="message ui-draggable ui-draggable-handle"><div><strong>'+ messageObject.user.username +'</strong></div><div><p class="message-text">' +messageObject.text +'</p></div><a class="remove-input" href="#"><span class="material-icons">delete forever</span></a><a class="like-input" href="#"><span class="material-icons">thumb_up_alt</span></a><span class="likesCount">0</span><input type="hidden" name="MessageID" value="5ebc624d7ab11810b82bf36c"></div>'
     )
 
     if (document.getElementById(messageObject._id)) {
@@ -305,6 +305,7 @@ $('#actionitem').submit(function (event) {
             retroid: retroid
         };
         socket.emit('createAction', actionItem);
+        $('input[name=actionitem]').val('')
     }
 })
 

@@ -19,21 +19,9 @@ block content
                         .form-group
                             label Description
                             if team.leader.filter(l => l._id == user._id).length > 0
-                                textarea.form-control(maxlength='125' name='description') #{team.description}
+                                textarea.form-control(maxlength='125' style='height:100px' name='description') #{team.description}
                             else
-                                textarea.form-control(maxlength='125' readonly='' name='description') #{team.description}
-                        .form-group
-                            label Created By
-                            input.form-control(type='text' readonly='' value='#{team.createdBy.username}')
-                        .form-group
-                            label Created Date
-                            input.form-control(type='text' readonly='' value='#{team.createdDate.toLocaleDateString()} #{team.createdDate.toLocaleTimeString()}')
-                        .form-group
-                            label Updated By
-                            input.form-control(type='text' readonly='' value='#{team.updatedBy.username}')
-                        .form-group
-                            label Updated Date
-                            input.form-control(type='text' readonly='' value='#{team.updatedDate.toLocaleDateString()} #{team.updatedDate.toLocaleTimeString()}')
+                                textarea.form-control(maxlength='125'  style='height:100px' readonly='' name='description') #{team.description}
                         .form-group 
                         if team.leader.filter(l => l._id == user._id).length > 0
                             input(type='file' class='form-control-file' name='image')
@@ -41,6 +29,21 @@ block content
                             input(type='hidden' name='currentImage' value='#{team.image}')
                         if team.leader.filter(l => l._id == user._id).length > 0
                             input(class='btn btn-success' type='submit' value='Save')
+                    </br>
+                    a#show-more(href='#') Show more
+                    .div#more-info(style='display: none;')
+                        label Created By
+                        input.form-control(type='text' readonly='' value='#{team.createdBy.username}')
+                        </br>
+                        label Created Date
+                        input.form-control(type='text' readonly='' value='#{team.createdDate.toLocaleDateString()} #{team.createdDate.toLocaleTimeString()}')
+                        </br>
+                        label Updated By
+                        input.form-control(type='text' readonly='' value='#{team.updatedBy.username}')     
+                        </br>
+                        label Updated Date
+                        input.form-control(type='text' readonly='' value='#{team.updatedDate.toLocaleDateString()} #{team.updatedDate.toLocaleTimeString()}')                   
+
 
                 .col-md-6
                     if(errors)
@@ -78,8 +81,12 @@ block content
                             tbody#myTable
                                 if team.actionitems.length < 1
                                     tr
-                                        th
+                                        td
                                             p No action items found.
+                                        td
+                                        td
+                                        td
+                                        td
                                 each i in team.actionitems
                                     tr
                                         td #{i.text}

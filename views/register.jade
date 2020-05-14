@@ -5,7 +5,7 @@ block content
 
             .py-5
                  h1 Register
-                 p.lead Create your free account now!
+                 p.lead Create your account!
 
             if(errors)
                 ul.list-group
@@ -26,11 +26,11 @@ block content
                     else
                         input.form-control(type='text'  placeholder='Name' name='lastName')
                 .form-group
-                    label User Name
+                    label Username
                     if data
-                        input.form-control(type='text'  placeholder='Name' value=data.username name='username')
-                    else
-                        input.form-control(type='text'  placeholder='Name' name='username')
+                            input.form-control(type='text'  pattern="[a-z]{1,15}" placeholder='Name' value=data.username name='username')
+                    else               
+                            input.form-control(type='text'  pattern="[a-z]{1,15}" placeholder='Name' name='username')
                 .form-group
                     label Email
                     if data

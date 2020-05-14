@@ -1,6 +1,7 @@
 .env
 node_modules/
 /public/images/*
-!/plublic/images/.gitkeep
-!/plublic/images/icons8-usuario.png
-!/plublic/images/team_default.png
+!/public/images/.gitkeep
+!/public/images/icons8-usuario.png
+!/public/images/team_default.png
+!/public/images/icons8-nota-48.png

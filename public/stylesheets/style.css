@@ -73,7 +73,7 @@ a {
   height: 570px;
   margin: 20px 0;
   border: 1px solid #ddd;
-  padding: 20px;
+  padding: 10px;
 }
 
 .messages.ui-droppable-hover{
@@ -84,13 +84,18 @@ a {
   width: 200px;
   height: 115px;
   position: absolute;
-  background: #FFF;
-  border-radius: 5px;
+  background: #f3e994;
+  border-radius: 2px;
   margin-bottom: 10px;
-  padding: 2px 15px 15px 15px;
-  box-shadow: 0 1px 4px 0 rgba(192, 208, 230, 0.8);
-  border-top: 20px solid rgba(230, 236, 245, 0.4);
+  padding: 2px 5px 5px 5px;
+  box-shadow: 4px 4px 4px 0 rgba(192, 208, 230, 0.8);
+  /* border-top: 20px solid rgba(230, 236, 245, 0.4); */
   cursor: grab;
+}
+
+.message-text{
+  overflow-wrap: break-word;
+  height: 100px;
 }
 
 .remove-input{
@@ -98,14 +103,14 @@ a {
   width: 30px;
   height: 30px;
   left: 5px;
-  top: 65px;
+  top: 85px;
   color: red;
 }
 
 .likesCount{
   position: absolute;
   right: 30px;
-  top: 65px;
+  top: 85px;
 }
 
 .like-input{
@@ -113,7 +118,7 @@ a {
   width: 20px;
   height: 20px;
   right: 5px;
-  top: 65px;
+  top: 85px;
 }
 
 .participants{

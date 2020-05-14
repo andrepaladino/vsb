@@ -87,4 +87,20 @@ $(document).ready(function () {
 })
 
 
+$(document).ready(function () {
+    $('#show-more').click(function () {
+        var x = document.getElementById("more-info");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+          $(this).html('Show less')
+        } else {
+          x.style.display = "none";
+          $(this).html('Show more')
+        }
+    });
+})
+
+
+
+
 
