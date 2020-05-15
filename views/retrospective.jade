@@ -36,6 +36,7 @@ block content
                                 | play_circle_outline
     
         if retro.status == 'INPROGRESS'
+            
             h4(style='font-style: italic;') Share your thoughts!
             form.form-inline#chat
                 .form-group.mb-3
@@ -46,7 +47,6 @@ block content
                     label.sr-only(for='inputPassword2') Password
                     input#inputPassword2.form-control(type='text' name='message' size="50" maxlength='45')
                 button.btn.btn-primary.mb-2(type='submit') Add
-
 
         .row
             .col-md-10
@@ -163,10 +163,7 @@ block content
                                         .dropdown-content
                                                 a.dropdown-item(href=href='/user/details/#{m._id}') Profile
                                 if retro.facilitator.equals(m._id)
-                                    .leader
-                                        span.material-icons.leader-icon(style='align: center' title='Facilitator')
-                                            | brightness_low
-                                //a.avatar(style='background-image: url(#{m.image});' href='/user/details/#{m._id}')
+                                    .leader(title='Facilitator')
                                 .infosPlayer
                                     span.nick=m.username
                                     span.inputQnt 0
@@ -176,5 +173,4 @@ block content
     script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js')
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    //- script(type='text/javascript' src='/javascripts/stopwatch.js')
     script(type='text/javascript' src='/javascripts/retro.js')

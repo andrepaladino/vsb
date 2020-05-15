@@ -14,13 +14,13 @@ block content
         .row
 
             each t in templates.templates
-                .col-md-3(style='float:left')
-                    .card.mb-2.option-card
+                .col-md-6.col-xl-3(style='float:left')
+                    .card.mb-2.option-card(style='height: 401px')
                         input(type='hidden' name='number' value='#{t.number}')
-                        img.card-img-top(src='#{t.image}' alt='Card image cap')
+                        img.card-img-top( style='height: 112px' src='#{t.image}' alt='Card image cap')
                         .card-body
                             h4.card-title=t.name
-                            p.card-text=t.description
+                            p.card-text(style='text-align: justify;')=t.description
         </br>
         </br>
         .row

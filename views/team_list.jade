@@ -15,8 +15,8 @@ block content
                     p There is not team on your list. Create a new team or wait for your team administrator to add you to a team.
                 else
                     each i in list
-                        .col-md-4.col-sm-8
-                            .card.mb-4.col-xm-10.shadow-sm
+                        .col-xl-4.col-md-6.col-sm-8.col-8(style='padding-bottom: 15px')
+                            .card.md-8.col-xm-10.shadow-sm
                                 div.img.card-img-top(width='100%' height='225px' xmlns='http://www.w3.org/2000/svg' preserveaspectratio='xMidYMid slice' focusable='false' role='img' aria-label='Placeholder: Thumbnail')
                                     img.team-list-img(src='#{i.image}' alt='image' style='width:100%; height:225px' class="rounded")
                                     text.team-list-title(fill='#eceeef') #{i.name}

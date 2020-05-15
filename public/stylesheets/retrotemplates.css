@@ -1,0 +1,26 @@
+.retro-header{
+    display: inline-block;
+}
+
+.retro-header-img {
+    display: inline-block;
+
+    width: 48px;
+    height: 48px;
+}
+
+.balloon-background{
+    background-image: url("/retroimages/balloon.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.balloon-category{
+    margin-bottom: 1px;
+}
+
+.balloon-session{
+    margin-top: 2px;
+    margin-bottom: 2px;
+    height: 300px;
+}

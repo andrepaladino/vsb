@@ -7,7 +7,7 @@ block content
         input(type='hidden' name='userEmails' value='#{userEmails}')
         div
             .row
-                .col-md-3
+                .col-xl-3.col-lg-6
                     img(src='#{team.image}' alt='image' style='width:300px;height:200px;' class="rounded")
                     form(name='update' method='post' action='/teams/edit/#{team.id}' encType = 'multipart/form-data')
                         .form-group
@@ -45,7 +45,7 @@ block content
                         input.form-control(type='text' readonly='' value='#{team.updatedDate.toLocaleDateString()} #{team.updatedDate.toLocaleTimeString()}')                   
 
 
-                .col-md-6
+                .col-xl-6.col-lg-6
                     if(errors)
                             ul.list-group
                                 each err in errors
@@ -161,9 +161,7 @@ block content
                                             .dropdown-content
                                                     a.dropdown-item(href=href='/user/details/#{m._id}') Profile                  
                                     if team.leader.includes(m._id)
-                                        .leader
-                                            span.material-icons.leader-icon(style='align: center' title='Leader')
-                                                | brightness_low
+                                        .leader(title='Leader')
                                     .infosPlayer
                                         span.nick=m.username
                                         a.remove-member(href='#')

@@ -43,6 +43,7 @@ a {
 }
 
 
+
 #chat {
   height: 100%;
   display: flex;
@@ -70,10 +71,18 @@ a {
 
 .messages {
   position: relative;
-  height: 570px;
+  height: 595px;
   margin: 20px 0;
-  border: 1px solid #ddd;
+  border: 3px solid gray;
   padding: 10px;
+  min-width: 225px;
+  border-radius: 5px;
+}
+
+#includedContent{
+  background-image: url("/retroimages/grid.png");
+  background-repeat: repeat;
+  border-radius: 8px;
 }
 
 .messages.ui-droppable-hover{
@@ -176,8 +185,8 @@ a {
 
 .leader{ 
   content: '';
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -185,7 +194,7 @@ a {
   border-radius: 50%;
   border: 2px #fff solid;
   position: absolute;
-  top: 10px;
+  top: 13px;
   left: 55px;
   background-color: #ffc926;
 }

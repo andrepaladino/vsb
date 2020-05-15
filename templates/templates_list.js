@@ -3,8 +3,8 @@ module.exports.loadTemplates = {
         {
             number: 1,
             name: 'Start Doing',
-            description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
-            image: '/images/team_default.png',
+            description: 'A start stop continue retrospective is a simple and effective way for teams to reflect on their recent experiences and decide on what they should change as they move forward.',
+            image: '/retroimages/stop_continue_start.jpg',
             categories: [
                 {
                     id: 'stopdoing',
@@ -24,8 +24,8 @@ module.exports.loadTemplates = {
         {
             number: 2,
             name: 'Hot-air balloon',
-            description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
-            image: '/images/team_default.png',
+            description: 'This is a simple activity for helping the team to identify things that makes them move faster, and things that slow them down.',
+            image: '/retroimages/hotair_balloon.jpg',
             categories: [
                 {
                     id: 'hotair',
@@ -41,8 +41,8 @@ module.exports.loadTemplates = {
         {
             number: 3,
             name: 'Mad/sad/Glad',
-            description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
-            image: '/images/team_default.png',
+            description: 'discussion around the emotional journey of by your team during the previous sprint, and is a great way to identify opportunities to improve team morale and job satisfaction.',
+            image: '/retroimages/mad_sad_glad.jpg',
             categories: [
                 {
                     id: 'mad',

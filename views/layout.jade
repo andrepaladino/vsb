@@ -3,6 +3,7 @@ html
   head
     title Virtual Shared Board
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/retrotemplates.css')
     script(src="https://code.jquery.com/jquery-1.12.4.js")
     script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
     link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.7.0/css/all.css', integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ', crossorigin='anonymous')
@@ -27,7 +28,7 @@ html
             | Teams
             span.sr-only (current)
       if !user
-        ul.navbar-nav.mr-auto
+        ul.navbar-nav.my-2.my-lg-0
           li.nav-item.active
             a.nav-link(href='/login')
               | Login
