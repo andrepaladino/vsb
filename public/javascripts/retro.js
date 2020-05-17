@@ -416,6 +416,34 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $('#timerMin').on('keyup', function (e) {
+        console.log($(this).html())
+        var min = $(this).html()
+        if(isNaN(min)){
+            console.log('Not a number')
+            $(this).html('15')
+        }
+
+        if(min.length > 2){
+            $(this).html('15')
+        }
+    });
+
+    $('#timerSec').on('keyup', function (e) {
+        console.log($(this).html())
+        var sec = $(this).html()
+        if(isNaN(sec)){
+            console.log('Not a number')
+            $(this).html('00')
+        }
+
+        if(sec.length > 2){
+            $(this).html('00')
+        }
+    });
+});
+
 
 
 
