@@ -53,6 +53,9 @@ module.exports.save = (req, res) => {
 //GET TEAM DETAILS
 module.exports.details = (req, res) => {
     Teams.findById((req.params.id), (err, team) => {
+        if(!(team.members.filter(m => m._id == req.session.user._id).length > 0)){
+            return res.redirect('/teams')
+        }
         if (err)
             console.log(err)
         else

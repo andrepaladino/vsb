@@ -75,19 +75,22 @@ module.exports.save = (req, res) => {
 
 module.exports.live = (req, res) => {
     Teams.findOne({ retrospectives: req.params.id }, (err, team) => {
-        console.log('Team Retro: ')
-        Retros.findById(req.params.id, (err, retro) => {
-            if (err)
-                console.log(err)
-        }).populate('participants').populate('inputs').exec(function (err, retro) {
-            Inputs.populate(retro.inputs, { path: 'user' }, (err, result) => {
+        if(!(team.members.filter(m => m._id == req.session.user._id).length > 0)){
+            res.redirect('/teams')
+        }else{
+            Retros.findById(req.params.id, (err, retro) => {
                 if (err)
                     console.log(err)
-                //console.log(team.retrospectives.actionitems)
-                res.render('retrospective', { retro: retro, team: team })
-
+            }).populate('participants').populate('inputs').exec(function (err, retro) {
+                Inputs.populate(retro.inputs, { path: 'user' }, (err, result) => {
+                    if (err)
+                        console.log(err)
+                    //console.log(team.retrospectives.actionitems)
+                    res.render('retrospective', { retro: retro, team: team })
+    
+                })
             })
-        })
+        }
     }).populate('members').populate('retrospectives').populate('actionitems.owner').populate('actionitems.retrospective')
 }
 
