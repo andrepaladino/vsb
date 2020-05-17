@@ -36,12 +36,20 @@ block content
                     if data
                         input.form-control(type='email' placeholder='Email' value=data.email name='email')
                     else
-                        input.form-control(type='email' placeholder='Email' name='email')                
-                .form-group
-                    label Password
-                    input.form-control(type='password' placeholder='Password' name='password')
-                .form-group
-                    label Confirm Password
-                    input.form-control(type='password' placeholder='Confirm Password' name='confirmpassword')
+                        input.form-control(type='email' placeholder='Email' name='email')
+                .row
+                    .col-md-4                
+                        .form-group
+                            label Password
+                            input.form-control(type='password' placeholder='Password' maxlength='12' name='password')
+                    .col-md-4
+                        </br>
+                        ul(style='color: grey;')
+                            li The password must contain at least 8 characters.
+                .row
+                    .col-md-4
+                        .form-group
+                            label Confirm Password
+                            input.form-control(type='password' placeholder='Confirm Password' maxlength='12' name='confirmpassword')
 
                 input(class='btn btn-success' type='submit' value='Register Now')

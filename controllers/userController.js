@@ -52,6 +52,19 @@ module.exports.registerUser = (req, res) => {
     var firstNameModified = (req.body.firstName.charAt(0).toUpperCase() + req.body.firstName.slice(1)).trim();
     var lastNameModified = (req.body.lastName.charAt(0).toUpperCase() + req.body.lastName.slice(1)).trim();
 
+
+    if(req.body.password.length < process.env.MIN_PASSWORD_LENGHT){
+        req.flash('error_messages', 'The password must contain at least 8 characters.')
+        req.flash('data', req.body)
+        return res.redirect('/register')
+    }
+
+    if(req.body.password.length > 12){
+        req.flash('error_messages', 'The password is too large.')
+        req.flash('data', req.body)
+        return res.redirect('/register')
+    }
+
     if(req.body.password && req.body.confirmpassword){
         if(req.body.password != req.body.confirmpassword){
             console.log('Passwords dont match')
@@ -62,22 +75,40 @@ module.exports.registerUser = (req, res) => {
         }
     }
 
-    Users.create({
-        firstName: firstNameModified,
-        lastName: lastNameModified,
-        username: req.body.username.trim(),
-        email: req.body.email,
-        password: req.body.password
-    }, (err, result) => {
-        if (err) {
-            req.flash('error_messages', Object.keys(err.errors).map(key => err.errors[key].message))
+    Users.findOne({email: req.body.email}, (err, result) => {
+        if(result){
+            req.flash('error_messages', 'Email already existis.')
             req.flash('data', req.body)
             return res.redirect('/register')
-        }
-        else {
-            res.redirect('/teams')
+        }else{
+            Users.findOne({username : req.body.username}, (err, result) => {
+                if(result){
+                    req.flash('error_messages', 'Username already exists.')
+                    req.flash('data', req.body)
+                    return res.redirect('/register')
+                }else{
+                    Users.create({
+                        firstName: firstNameModified,
+                        lastName: lastNameModified,
+                        username: req.body.username.trim(),
+                        email: req.body.email,
+                        password: req.body.password
+                    }, (err, result) => {
+                        if (err) {
+                            req.flash('error_messages', Object.keys(err.errors).map(key => err.errors[key].message))
+                            req.flash('data', req.body)
+                            return res.redirect('/register')
+                        }
+                        else {
+                            res.redirect('/teams')
+                        }
+                    })
+                }
+            })
         }
     })
+
+   
 }
 
 module.exports.details = (req, res) => {
