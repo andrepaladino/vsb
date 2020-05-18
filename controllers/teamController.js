@@ -1,6 +1,7 @@
 const Teams = require('../database/models/Teams')
 const Users = require('../database/models/Users')
 const RetroTemplates = require('../templates/templates_list')
+const cloudinary = require('cloudinary')
 
 //GET LIST OF TEAMS
 module.exports.list = (req, res) => {
@@ -22,14 +23,21 @@ module.exports.create = (req, res) => {
 module.exports.save = (req, res) => {
     var saveFileName = ''
     if (typeof req.file === 'undefined') {
-        saveFileName = 'team_default.png'
+        saveFileName = '/images/team_default.png'
     } else {
-        saveFileName = req.file.filename
+        cloudinary.v2.uploader.upload(req.file.path, { folder: process.env.ENVIRONMENT + '/TEAM' }, (err, result) => {
+            if(err){
+                console.log(err)
+            }else{
+                saveFileName = result.secure_url
+            }
+        })
     }
+
     Teams.create({
         name: req.body.name.trim(),
         description: req.body.description.trim(),
-        image: '/images/' + saveFileName,
+        image: saveFileName,
         leader: [req.session.user._id],
         members: [req.session.user._id],
         createdBy: req.session.user._id,
@@ -47,13 +55,13 @@ module.exports.save = (req, res) => {
             res.redirect('/teams')
         }
     })
-    console.log(req.file)
+
 }
 
 //GET TEAM DETAILS
 module.exports.details = (req, res) => {
     Teams.findById((req.params.id), (err, team) => {
-        if(!(team.members.filter(m => m._id == req.session.user._id).length > 0)){
+        if (!(team.members.filter(m => m._id == req.session.user._id).length > 0)) {
             return res.redirect('/teams')
         }
         if (err)
@@ -65,49 +73,63 @@ module.exports.details = (req, res) => {
 
 //UPDATE TEAM
 module.exports.update = (req, res) => {
-
-    console.log(req.file)
     try {
-        var currentImageName = '/images/' + req.file.filename
-        console.log(req.file.filename)
-    } catch (ex) {
-        console.log(req.body.currentImage)
-        var currentImageName = req.body.currentImage
-        console.log(ex)
-        console.log('file name is: ' + req.body.currentImage)
-    }
+        cloudinary.v2.uploader.upload(req.file.path, { folder: process.env.ENVIRONMENT + '/TEAM' }, (err, result) => {
+            console.log(result.secure_url)
+            Teams.findById((req.params.id), (err, team) => {
+                if (!(team.leader.filter(l => l._id == req.session.user._id).length > 0)) {
+                    console.log('UPDATE/this is not a leader')
+                    req.flash('registrationErrors', 'Only a team leader can update team details.')
+                    return res.redirect('/teams/details/' + team._id)
+                }
+                team.updateOne({
+                    name: req.body.name,
+                    description: req.body.description,
+                    image: result.secure_url,
+                    updatedBy: req.session.user._id,
+                    updatedDate: Date.now()
+                }, { runValidators: true }, (err, result) => {
+                    if (err) {
+                        req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
+                        console.log(err)
+                        res.redirect('/teams/details/' + team._id)
+                    }
+                    else {
+                        res.redirect('/teams/details/' + team._id)
+                    }
+                })
 
-    Teams.findById((req.params.id), (err, team) => {
-
-        if(!(team.leader.filter(l => l._id == req.session.user._id).length > 0)){
-            console.log('UPDATE/this is not a leader')
-            req.flash('registrationErrors', 'Only a team leader can update team details.')
-            return res.redirect('/teams/details/' + team._id)
-        }
-
-        team.updateOne({
-            name: req.body.name,
-            description: req.body.description,
-            image: currentImageName,
-            updatedBy: req.session.user._id,
-            updatedDate: Date.now()
-        }, { runValidators: true }, (err, result) => {
-            if (err) {
-                req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
-                console.log(err)
-                res.redirect('/teams/details/' + team._id)
-            }
-            else {
-                res.redirect('/teams/details/' + team._id)
-            }
+            })
         })
+    } catch (ex) {
+        Teams.findById((req.params.id), (err, team) => {
+            if (!(team.leader.filter(l => l._id == req.session.user._id).length > 0)) {
+                console.log('UPDATE/this is not a leader')
+                req.flash('registrationErrors', 'Only a team leader can update team details.')
+                return res.redirect('/teams/details/' + team._id)
+            }
+            team.updateOne({
+                name: req.body.name,
+                description: req.body.description,
+                updatedBy: req.session.user._id,
+                updatedDate: Date.now()
+            }, { runValidators: true }, (err, result) => {
+                if (err) {
+                    req.flash('registrationErrors', Object.keys(err.errors).map(key => err.errors[key].message))
+                    console.log(err)
+                    res.redirect('/teams/details/' + team._id)
+                }
+                else {
+                    res.redirect('/teams/details/' + team._id)
+                }
+            })
 
-    })
+        })
+    }
 }
 
 //ADD TEAM MEMBER
 module.exports.addMember = (req, res) => {
-
     Users.findOne({ email: req.body.memberEmail }, (err, user) => {
         if (err || !user) {
             req.flash('registrationErrors', 'Please, include a user email')
@@ -131,13 +153,9 @@ module.exports.addMember = (req, res) => {
         }
     })
 }
-
 //REMOVE TEAM MEMBER
 module.exports.removeMember = (req, res) => {
-
     console.log(req.body.memberId)
-
-
     Users.findOne({ _id: req.body.memberId }, (err, user) => {
         console.log(req.params.id)
 
@@ -160,27 +178,27 @@ module.exports.removeMember = (req, res) => {
 module.exports.changeLeader = (req, res) => {
 
     Teams.findById(req.params.teamid, (err, team) => {
-        if(err){
+        if (err) {
             console.log(err)
             return res.redirect('/teams/details/' + team._id)
         }
 
-        if(team.leader.filter(l => l._id == req.session.user._id).length > 0){ //CHECK IF REQUEST USER IS A LEADER
+        if (team.leader.filter(l => l._id == req.session.user._id).length > 0) { //CHECK IF REQUEST USER IS A LEADER
             console.log('This is a leader')
-            if(!team.leader.includes(req.params.userid)){ //IF NEW LEADER IS NOT LEADER
+            if (!team.leader.includes(req.params.userid)) { //IF NEW LEADER IS NOT LEADER
                 team.updateOne({ $push: { leader: req.params.userid } }, (err, result) => { //ADD LEADER
-                    if(err)
+                    if (err)
                         console.log(err)
                     return res.redirect('/teams/details/' + team._id)
                 })
-            }else if(team.leader.length > 1){ //IF USER IS ALREADY A LEADER, BUT TEAM HAS TO HAVE AT LEAST ONE LEADER
+            } else if (team.leader.length > 1) { //IF USER IS ALREADY A LEADER, BUT TEAM HAS TO HAVE AT LEAST ONE LEADER
                 team.updateOne({ $pull: { leader: req.params.userid } }, (err, result) => { //REMOVE USER LEADERSHIP
-                    if(err)
+                    if (err)
                         console.log(err)
                     return res.redirect('/teams/details/' + team._id)
                 })
             }
-        }else{
+        } else {
             console.log('Not a leader')
             return res.redirect('/teams/details/' + team._id)
 

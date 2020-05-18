@@ -5,6 +5,7 @@ const router = express.Router()
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
 const multer = require('multer')
+const cloudinary = require('cloudinary')
 
 // controllers
 const teamController = require('../controllers/teamController')
@@ -23,6 +24,12 @@ app.use(express.static(publicDir));
 
 var node_modules = require('path').join(__dirname, '/node_modules');
 app.use(express.static(node_modules));
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
