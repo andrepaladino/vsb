@@ -1,8 +1,27 @@
 $(function () {
-    var templateNumber = $('input[name=retroTemplateNumber]').val();
-    $('#includedContent').load('/template_views/template_' + templateNumber + '.html');
+    console.log(detectMob())
+    if(!detectMob()){
+        var templateNumber = $('input[name=retroTemplateNumber]').val();
+        $('#includedContent').load('/template_views/template_' + templateNumber + '.html');
+    }
 
 });
+
+function detectMob() {
+    const toMatch = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i
+    ];
+
+    return toMatch.some((toMatchItem) => {
+        return navigator.userAgent.match(toMatchItem);
+    });
+}
 
 var socket = io()
 

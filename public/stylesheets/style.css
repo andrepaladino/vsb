@@ -9,12 +9,10 @@ body {
 }
 
 .login{
-  height: 250px;
-  width: 400px;
-  position: fixed;
-  left: 50%;
-  top: 10%;
-  transform: translate(-50%, -20%);
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
 }
 
 
