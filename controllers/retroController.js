@@ -30,7 +30,7 @@ module.exports.save = (req, res) => {
     var errors = []
 
     Teams.findById(req.body.teamID, (err, t) => {
-        if (t.leader == req.body.user) {
+        if (t.leader.filter(l => l._id == req.session.user._id).length > 0) {
             if (req.body.selectedTemplate != 0) {
                 var template = RetroTemplates.loadTemplates.templates.find(o => o.number == req.body.selectedTemplate);
 
@@ -40,7 +40,7 @@ module.exports.save = (req, res) => {
                     name: req.body.name.trim(),
                     retroTemplate: template,
                     facilitator: [req.session.user._id],
-                    createdDate: Date.now()
+                    createdDate: Date.now() 
 
                 }, (err, newRetro) => {
                     if (err) {
