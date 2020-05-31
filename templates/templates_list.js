@@ -40,7 +40,7 @@ module.exports.loadTemplates = {
 
         {
             number: 3,
-            name: 'Mad/sad/Glad',
+            name: 'Mad/Sad/Glad',
             description: 'discussion around the emotional journey of by your team during the previous sprint, and is a great way to identify opportunities to improve team morale and job satisfaction.',
             image: '/retroimages/mad_sad_glad.jpg',
             categories: [
