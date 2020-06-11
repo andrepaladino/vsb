@@ -131,7 +131,7 @@ module.exports.update = (req, res) => {
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
                     image: result.secure_url,
-                    username: req.body.username,
+                    username: req.body.username.trim().toLowerCase(),
                 }, { new: true, runValidators: true }, (err, user) => {
 
                     if (err) {
