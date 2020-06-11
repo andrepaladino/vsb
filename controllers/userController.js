@@ -17,11 +17,10 @@ module.exports.login = (req, res) => {
 module.exports.loginUser = (req, res) => {
 
     if (!req.body.email || !req.body.password) {
-        req.flash('registrationErrors', 'Please, provide Email and Password')
+        req.flash('registrationErrors', 'Please, provide User and Password')
         res.redirect('/login')
     } else {
-        Users.findOne({ email: req.body.email }, (err, user) => {
-
+        Users.findOne({ $or: [{email : req.body.email.toLowerCase() }, {username:req.body.email.toLowerCase() }]}, (err, user) => {
             if (user) {
                 bcrypt.compare(req.body.password, user.password, (err, same) => {
                     if (same) {
@@ -30,14 +29,14 @@ module.exports.loginUser = (req, res) => {
                         return res.redirect('/')
                     }
                     else {
-                        req.flash('registrationErrors', 'Email or Password invalid')
+                        req.flash('registrationErrors', 'User or Password invalid')
                         return res.redirect('/login')
                     }
                 })
             }
             else {
                 console.log(err)
-                req.flash('registrationErrors', 'Email or Password invalid')
+                req.flash('registrationErrors', 'User or Password invalid')
                 res.redirect('/login')
             }
         })
@@ -92,8 +91,8 @@ module.exports.registerUser = (req, res) => {
                     Users.create({
                         firstName: firstNameModified,
                         lastName: lastNameModified,
-                        username: req.body.username.trim(),
-                        email: req.body.email,
+                        username: req.body.username.trim().toLowerCase(),
+                        email: req.body.email.trim().toLowerCase(),
                         password: req.body.password
                     }, (err, result) => {
                         if (err) {

@@ -25,12 +25,20 @@ block content
                         input.form-control(type='text'  placeholder='Name' value=data.lastName name='lastName')
                     else
                         input.form-control(type='text'  placeholder='Name' name='lastName')
-                .form-group
-                    label Username
-                    if data
-                            input.form-control(type='text'  pattern="[a-z]{1,15}" placeholder='Name' value=data.username name='username')
-                    else               
-                            input.form-control(type='text'  pattern="[a-z]{1,15}" placeholder='Name' name='username')
+                .row
+                    .col-md-4
+                        .form-group
+                            label Username
+                            if data
+                                    input.form-control(type='text'  pattern="[A-Za-z0-9]{1,15}" placeholder='Name' value=data.username name='username')
+                            else               
+                                    input.form-control(type='text'  pattern="[A-Za-z0-9]{1,15}" placeholder='Name' name='username')
+                    .col-md-4
+                        </br>
+                        ul(style='color: grey;')
+                            li Letters and numbers only;
+                            li No  punctuation or special characters;
+                            li Maximun 15 characters.
                 .form-group
                     label Email
                     if data
