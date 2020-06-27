@@ -128,52 +128,22 @@ module.exports.update = (req, res) => {
             cloudinary.v2.uploader.upload(req.file.path, { folder: process.env.ENVIRONMENT + '/USER' }, (err, result) => {
 
                 Users.findOne({ username: req.body.username.toLowerCase() }, (err, existingUser) => {
-                    if (req.params.id != existingUser._id) {
-                        req.flash('error_messages', 'Username already exists')
-                        console.log(err)
-                        return res.redirect('/user/details/' + req.params.id)
-                    } else {
-                        Users.findByIdAndUpdate((req.params.id),
-                            {
-                                firstName: req.body.firstName,
-                                lastName: req.body.lastName,
-                                image: result.secure_url,
-                                username: req.body.username.toString().toLowerCase().trim(),
-                            }, { new: true, runValidators: true }, (err, user) => {
+                    if (existingUser) {
 
-                                if (err) {
-                                    req.flash('error_messages', Object.keys(err.errors).map(key => err.errors[key].message))
-                                    console.log(err)
-                                    return res.redirect('/user/details/' + req.params.id)
+                        if (req.params.id != existingUser._id) {
+                            req.flash('error_messages', 'Username already exists')
+                            console.log(err)
+                            return res.redirect('/user/details/' + req.params.id)
 
-                                }
-                                else {
-                                    req.session.user.firstName = user.firstName
-                                    req.session.user.lastName = user.lastName
-                                    req.session.user.username = user.username
-                                    console.log(req.session)
-                                    return res.redirect('/user/details/' + user._id)
-                                }
-                            })
+                        }
+
                     }
-
-                })
-
-
-            })
-
-        } catch (ex) {
-            Users.findOne({ username: req.body.username.toLowerCase() }, (err, existingUser) => {
-                if (req.params.id != existingUser._id) {
-                    req.flash('error_messages', 'Username already exists')
-                    console.log(err)
-                    return res.redirect('/user/details/' + req.params.id)
-                } else {
                     Users.findByIdAndUpdate((req.params.id),
                         {
                             firstName: req.body.firstName,
                             lastName: req.body.lastName,
-                            username: req.body.username,
+                            image: result.secure_url,
+                            username: req.body.username.toString().toLowerCase().trim(),
                         }, { new: true, runValidators: true }, (err, user) => {
 
                             if (err) {
@@ -191,7 +161,42 @@ module.exports.update = (req, res) => {
                             }
                         })
 
+
+                })
+
+
+            })
+
+        } catch (ex) {
+            Users.findOne({ username: req.body.username.toLowerCase() }, (err, existingUser) => {
+                if (existingUser) {
+                    if (req.params.id != existingUser._id) {
+                        req.flash('error_messages', 'Username already exists')
+                        console.log(err)
+                        return res.redirect('/user/details/' + req.params.id)
+                    }
                 }
+                Users.findByIdAndUpdate((req.params.id),
+                    {
+                        firstName: req.body.firstName,
+                        lastName: req.body.lastName,
+                        username: req.body.username,
+                    }, { new: true, runValidators: true }, (err, user) => {
+
+                        if (err) {
+                            req.flash('error_messages', Object.keys(err.errors).map(key => err.errors[key].message))
+                            console.log(err)
+                            return res.redirect('/user/details/' + req.params.id)
+
+                        }
+                        else {
+                            req.session.user.firstName = user.firstName
+                            req.session.user.lastName = user.lastName
+                            req.session.user.username = user.username
+                            console.log(req.session)
+                            return res.redirect('/user/details/' + user._id)
+                        }
+                    })
 
             })
 
