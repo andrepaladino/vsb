@@ -112,6 +112,11 @@ io.on('connection', socket => {
     socket.to(data).emit('goToNext', { retroid: data })
   })
 
+  socket.on('completedRetro', (data) => {
+    console.log('Complete :' + data)
+    socket.to(data).emit('goToCompletePage', { retroid: data })
+  })
+
   socket.on('changePosition', (coord) => {
     Inputs.findByIdAndUpdate(coord.element, { category: coord.target, positionLeft: coord.left, positionTop: coord.top }, (err, result) => {
       if (err)

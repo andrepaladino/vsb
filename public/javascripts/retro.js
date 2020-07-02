@@ -187,6 +187,11 @@ socket.on('goToNext', function (data) {
     location.reload()
 })
 
+socket.on('goToCompletePage', function (data) {
+    console.log(data.retroid)
+    window.location.href = '/retro/complete/' + data.retroid
+})
+
 
 socket.on('createActionItem', function (data) {
     console.log(data.actionitem)
@@ -276,6 +281,7 @@ $('.completeRetro').on('click', function (e) {
             type: 'POST',
             url: '/retro/live/complete/' + retroid,
             success: function (response) {
+                socket.emit('completedRetro', retroid)
                 window.location.href = '/retro/complete/' + retroid
             },
             error: function (err) {
