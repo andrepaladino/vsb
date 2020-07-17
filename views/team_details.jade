@@ -163,7 +163,7 @@ block content
                                     if team.leader.includes(m._id)
                                         .leader(title='Leader')
                                     .infosPlayer
-                                        span.nick=m.username
+                                        span.nick=m.firstName+" " + m.lastName
                                         a.remove-member(href='#')
                                             span.material-icons(href='#' team-id = team._id member-id = m._id style="color:red")
                                                 | delete
