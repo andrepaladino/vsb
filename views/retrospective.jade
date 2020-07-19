@@ -85,10 +85,10 @@ block content
                                                     | more_horiz
                                                 .dropdown-menu(aria-labelledby='btnGroupDrop1')
                                                     if i.status == 'OPEN'
-                                                        a.dropdown-item#completeAction(href='#' action-id = i._id) Complete
-                                                        a.dropdown-item#cancelAction(href='#' action-id = i._id) Cancel
+                                                        a.dropdown-item.completeAction(href='#' action-id = i._id) Complete
+                                                        a.dropdown-item.cancelAction(href='#' action-id = i._id) Cancel
                                                     else
-                                                        a.dropdown-item#openAction(href='#' action-id = i._id) Open
+                                                        a.dropdown-item.openAction(href='#' action-id = i._id) Open
                 if(retro.status == 'INPROGRESS')
                     div#includedContent
                 if(retro.status == 'REVIEW')
@@ -140,10 +140,10 @@ block content
                                                     | more_horiz
                                                 .dropdown-menu(aria-labelledby='btnGroupDrop1')
                                                     if ai.status == 'OPEN'
-                                                        a.dropdown-item#completeAction(href='#' action-id = ai._id) Complete
-                                                        a.dropdown-item#cancelAction(href='#' action-id = ai._id) Cancel
+                                                        a.dropdown-item.completeAction(href='#' action-id = ai._id) Complete
+                                                        a.dropdown-item.cancelAction(href='#' action-id = ai._id) Cancel
                                                     else
-                                                        a.dropdown-item#openAction(href='#' action-id = ai._id) Open
+                                                        a.dropdown-item.openAction(href='#' action-id = ai._id) Open
             .col-md-2
                 div#participants
                     h2 Participants

@@ -359,7 +359,8 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    $('#completeAction').on('click', function (e) {
+    $('.completeAction').on('click', function (e) {
+        console.log("complete action")
         $target = $(e.target);
 
         const actionid = $target.attr('action-id');
