@@ -335,12 +335,12 @@ $('#actionitem').submit(function (event) {
 })
 
 $(document).ready(function () {
-    $('.cancel-action').on('click', function (e) {
+    $('.cancelAction').on('click', function (e) {
         $target = $(e.target);
 
         const actionid = $target.attr('action-id');
         var retroid = $('input[name=retroID]').val();
-        console.log('Complete Action Item: ' + actionid)
+        
 
         var action = { actionid: actionid, retroid: retroid }
 
@@ -360,13 +360,11 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('.completeAction').on('click', function (e) {
-        console.log("complete action")
         $target = $(e.target);
 
         const actionid = $target.attr('action-id');
         var retroid = $('input[name=retroID]').val();
 
-        console.log('Complete Action Item: ' + actionid)
 
         var action = { actionid: actionid, retroid: retroid }
 
